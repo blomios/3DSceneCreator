@@ -48,32 +48,29 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <QLabel>
-#include <QSurfaceFormat>
+#ifndef GEOMETRYENGINE_H
+#define GEOMETRYENGINE_H
 
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
 
-#ifndef QT_NO_OPENGL
-#include "mainwidget.h"
-#endif
-
-int main(int argc, char *argv[])
+class GeometryEngine : protected QOpenGLFunctions
 {
-    QApplication app(argc, argv);
-    app.setAttribute( Qt::AA_UseDesktopOpenGL );
+public:
+    GeometryEngine();
+    virtual ~GeometryEngine();
 
-    QSurfaceFormat format;
-    format.setDepthBufferSize(24);
-    QSurfaceFormat::setDefaultFormat(format);
+    void drawGeometry(QOpenGLShaderProgram *program);
 
-    app.setApplicationName("Template IN55");
-    app.setApplicationVersion("1.0");
-#ifndef QT_NO_OPENGL
-    MainWidget widget;
-    widget.show();
-#else
-    QLabel note("OpenGL Support required");
-    note.show();
-#endif
-    return app.exec();
-}
+    void refreshGeometry();
+
+private:
+    void initGeometry();
+
+
+    QOpenGLBuffer arrayBuf;
+    QOpenGLBuffer indexBuf;
+};
+
+#endif // GEOMETRYENGINE_H

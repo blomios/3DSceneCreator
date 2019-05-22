@@ -48,32 +48,53 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <QLabel>
-#include <QSurfaceFormat>
+#ifndef MAINWIDGET_H
+#define MAINWIDGET_H
 
+#include "geometryengine.h"
 
-#ifndef QT_NO_OPENGL
-#include "mainwidget.h"
-#endif
+#include <QOpenGLWidget>
+#include <QOpenGLFunctions>
+#include <QMatrix4x4>
+#include <QQuaternion>
+#include <QVector2D>
+#include <QBasicTimer>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
 
-int main(int argc, char *argv[])
+class GeometryEngine;
+
+class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
-    QApplication app(argc, argv);
-    app.setAttribute( Qt::AA_UseDesktopOpenGL );
+    Q_OBJECT
 
-    QSurfaceFormat format;
-    format.setDepthBufferSize(24);
-    QSurfaceFormat::setDefaultFormat(format);
+public:
+    explicit MainWidget(QWidget *parent = 0);
+    ~MainWidget();
 
-    app.setApplicationName("Template IN55");
-    app.setApplicationVersion("1.0");
-#ifndef QT_NO_OPENGL
-    MainWidget widget;
-    widget.show();
-#else
-    QLabel note("OpenGL Support required");
-    note.show();
-#endif
-    return app.exec();
-}
+protected:
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
+    void timerEvent(QTimerEvent *e) override;
+
+    void initializeGL() override;
+    void resizeGL(int w, int h) override;
+    void paintGL() override;
+
+    void initShaders();
+    void initTextures();
+
+private:
+    QBasicTimer timer;
+    QOpenGLShaderProgram program;
+    GeometryEngine *geometries;
+
+    QMatrix4x4 projection;
+
+    QVector2D mousePressPosition;
+    QVector3D rotationAxis;
+    qreal angularSpeed;
+    QQuaternion rotation;
+};
+
+#endif // MAINWIDGET_H
