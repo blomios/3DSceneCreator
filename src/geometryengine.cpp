@@ -177,10 +177,8 @@ void GeometryEngine::initGeometry()
     // Transfer index data to VBO 1
     indexBuf.bind();
     indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
-//! [1]
 }
 
-//! [2]
 void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
 {
     // Tell OpenGL which VBOs to use
