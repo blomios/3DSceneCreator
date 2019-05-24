@@ -54,6 +54,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
+#include <QSlider>
 
 class GeometryEngine : protected QOpenGLFunctions
 {
@@ -65,10 +66,13 @@ public:
 
     void refreshGeometry();
 
+    void setParametersSliders(QSlider* numberOfStagesSlider, QSlider* verticesPerStageSlider);
+
 private:
     void initGeometry();
 
-
+    QSlider* numberOfStagesSlider;
+    QSlider* verticesPerStageSlider;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
 };

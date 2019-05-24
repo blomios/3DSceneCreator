@@ -72,6 +72,8 @@ public:
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget();
 
+    GeometryEngine *getGeometries() const;
+
 protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;

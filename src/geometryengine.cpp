@@ -107,8 +107,8 @@ GeometryEngine::~GeometryEngine()
 void GeometryEngine::refreshGeometry(){
 
     //Set manualy form proprieties (it will be deleted when the interface will be created)
-    figure.nbStages = 100;
-    figure.nbVerticesPerStage = 100;
+    figure.nbStages = this->numberOfStagesSlider->value();
+    figure.nbVerticesPerStage = this->verticesPerStageSlider->value();
 
     //Init vertices and indices number to 0
     nbrIndices = 0;
@@ -205,4 +205,8 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, nbrIndices, GL_UNSIGNED_SHORT, 0);
 }
-//! [2]
+
+void GeometryEngine::setParametersSliders(QSlider* numberOfStagesSlider, QSlider* verticesPerStageSlider) {
+    this->numberOfStagesSlider = numberOfStagesSlider;
+    this->verticesPerStageSlider = verticesPerStageSlider;
+}

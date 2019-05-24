@@ -157,6 +157,11 @@ void MainWidget::initShaders()
     if (!program.bind())
         close();
 }
+
+GeometryEngine *MainWidget::getGeometries() const
+{
+    return geometries;
+}
 //! [3]
 
 
