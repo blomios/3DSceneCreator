@@ -58,7 +58,14 @@
 class GeometryEngine : protected QOpenGLFunctions
 {
 public:
+    struct FigureData
+    {
+        int nbVerticesPerStage;
+        int nbStages;
+    };
+
     GeometryEngine();
+    GeometryEngine(FigureData data);
     virtual ~GeometryEngine();
 
     void drawGeometry(QOpenGLShaderProgram *program);
@@ -67,8 +74,7 @@ public:
 
 private:
     void initGeometry();
-
-
+    FigureData figure;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
 };

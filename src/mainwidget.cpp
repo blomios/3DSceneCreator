@@ -131,8 +131,12 @@ void MainWidget::initializeGL()
     // Enable back face culling
     //glEnable(GL_CULL_FACE);
 //! [2]
+    GeometryEngine::FigureData figure;
+    figure.nbStages = 50;
+    figure.nbVerticesPerStage = 50;
 
-    geometries = new GeometryEngine;
+    geometries = new GeometryEngine(figure);
+
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
