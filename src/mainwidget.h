@@ -74,6 +74,9 @@ public:
 
     GeometryEngine *getGeometries() const;
 
+public slots:
+    void setNbOfStages(int stages);
+
 protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
@@ -97,6 +100,9 @@ private:
     QVector3D rotationAxis;
     qreal angularSpeed;
     QQuaternion rotation;
+
+    // Object parameters
+    int nbOfStages;
 };
 
 #endif // MAINWIDGET_H

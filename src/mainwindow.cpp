@@ -6,10 +6,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    // Retrieves the two parameters
+
+    // Retrieves the parameter sliders
     QSlider* nbOfStagesSlider = ui->nbOfStagesSlider;
     QSlider* verticesPerStageSlider = ui->verticesPerStageSlider;
-    ui->GLWidget->getGeometries()->setParametersSliders(nbOfStagesSlider, verticesPerStageSlider);
+
+    QObject::connect(nbOfStagesSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfStages(int)));
 }
 
 MainWindow::~MainWindow()

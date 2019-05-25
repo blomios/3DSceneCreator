@@ -200,3 +200,8 @@ void MainWidget::paintGL()
     // Draw cube geometry
     geometries->drawGeometry(&program);
 }
+
+void MainWidget::setNbOfStages(int stages) {
+    this->nbOfStages = stages;
+    this->geometries->setObjectParameters(stages);
+}
