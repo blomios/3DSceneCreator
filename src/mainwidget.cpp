@@ -203,5 +203,10 @@ void MainWidget::paintGL()
 
 void MainWidget::setNbOfStages(int stages) {
     this->nbOfStages = stages;
-    this->geometries->setObjectParameters(stages);
+    this->geometries->setNbOfStages(stages);
+}
+
+void MainWidget::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
+    this->nbOfVerticesPerStage = nbOfVerticesPerStage;
+    this->geometries->setNbOfVerticesPerStage(nbOfVerticesPerStage);
 }

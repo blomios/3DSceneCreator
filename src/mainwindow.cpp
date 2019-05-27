@@ -11,7 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QSlider* nbOfStagesSlider = ui->nbOfStagesSlider;
     QSlider* verticesPerStageSlider = ui->verticesPerStageSlider;
 
+    // Connects the sliders to the widget
     QObject::connect(nbOfStagesSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfStages(int)));
+    QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfVerticesPerStage(int)));
 }
 
 MainWindow::~MainWindow()

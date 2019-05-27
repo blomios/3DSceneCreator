@@ -78,7 +78,7 @@ void GeometryEngine::refreshGeometry() {
 
     //Set manualy form proprieties (it will be deleted when the interface will be created)
     figure.nbStages = this->nbOfStages;
-    figure.nbVerticesPerStage = 100;
+    figure.nbVerticesPerStage = this->nbOfVerticesPerStage;
 
     //Init vertices and indices number to 0
     nbrIndices = 0;
@@ -174,6 +174,10 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
     glDrawElements(GL_TRIANGLES, nbrIndices, GL_UNSIGNED_SHORT, 0);
 }
 
-void GeometryEngine::setObjectParameters(int nbOfStages) {
+void GeometryEngine::setNbOfStages(int nbOfStages) {
     this->nbOfStages = nbOfStages;
+}
+
+void GeometryEngine::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
+    this->nbOfVerticesPerStage = nbOfVerticesPerStage;
 }

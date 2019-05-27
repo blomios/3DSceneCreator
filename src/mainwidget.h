@@ -76,6 +76,7 @@ public:
 
 public slots:
     void setNbOfStages(int stages);
+    void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
 
 protected:
     void mousePressEvent(QMouseEvent *e) override;
@@ -103,6 +104,7 @@ private:
 
     // Object parameters
     int nbOfStages;
+    int nbOfVerticesPerStage;
 };
 
 #endif // MAINWIDGET_H

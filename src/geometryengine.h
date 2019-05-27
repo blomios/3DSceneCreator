@@ -68,7 +68,9 @@ public:
 
     void refreshGeometry();
 
-    void setObjectParameters(int nbOfStages);
+    void setNbOfStages(int nbOfStages);
+
+    void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
 
 private:
     void initGeometry();
@@ -104,6 +106,7 @@ private:
 
     // Object's parameters
     int nbOfStages;
+    int nbOfVerticesPerStage;
 };
 
 #endif // GEOMETRYENGINE_H
