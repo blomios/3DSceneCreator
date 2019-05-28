@@ -19,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QSpinBox* verticesPerStageSpinBox = ui->verticesPerStageSpinBox;
     QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), verticesPerStageSpinBox, SLOT(setValue(int)));
     QObject::connect(verticesPerStageSpinBox, SIGNAL(valueChanged(int)), verticesPerStageSlider, SLOT(setValue(int)));
-    QSpinBox* nbOfStagesSpinBox = ui->nbOfStagesSpinBox;
-    QSpinBox* verticesPerStageSpinBox = ui->verticesPerStageSpinBox;
 
     // Connects the sliders to the widget
     QObject::connect(nbOfStagesSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfStages(int)));
