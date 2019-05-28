@@ -110,17 +110,22 @@ void GeometryEngine::refreshGeometry(){
 
     //Create vertices tab with the differents form proprieties
     for(int i = 0; i <= figure.nbStages; i++){
+
+
         for(int j = 0; j < figure.nbVerticesPerStage; j++){
 
             float x = cos( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i );
             float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i ) ;
             QVector3D color = QVector3D(1.0f, abs(x),0.0f);
 
-            vertices.push_back( {QVector3D(
+            VertexData vertex = {QVector3D(
                                  x, //X position
                                  (2.5f / (figure.nbStages+1)) * i - 2.5f/2, //Y position
                                  z), //Z position
-                                 color} ); //color
+                                 color};
+
+            vertices.push_back( vertex); //color
+
             nbrVertices++;
         }
     }
@@ -169,6 +174,76 @@ void GeometryEngine::refreshGeometry(){
 //! [1]
 }
 
+void GeometryEngine::setBottleNeck(float yPos, float xSize, float ySize){
+
+    int initialIndex = getStagesFromYPosition(yPos);
+
+    int index = 0;
+
+    float coeff = 1/xSize;
+
+    while(initialIndex+index < vertices.size() && initialIndex - index >=0 && abs(vertices[initialIndex + index].position.y() - yPos) < ySize){
+
+        float coeffSec = coeff *  cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
+
+        if(coeffSec >= 1){
+            vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() / (coeffSec ) );
+            vertices[initialIndex - index].position.setZ( vertices[initialIndex - index].position.z() / (coeffSec ) );
+
+            vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() / (coeffSec ) );
+            vertices[initialIndex - index].position.setX( vertices[initialIndex - index].position.x() / (coeffSec ) );
+        }
+
+
+
+        index++;
+
+    }
+
+    arrayBuf.destroy();
+    indexBuf.destroy();
+
+    arrayBuf.create();
+    indexBuf.create();
+
+    VertexData *arr = new VertexData[vertices.size()];
+    copy(vertices.begin(),vertices.end(),arr);
+    arrayBuf.bind();
+    arrayBuf.allocate(arr, nbrVertices * sizeof(VertexData));
+    arrayBuf.release();
+    delete[] arr;
+
+
+    GLushort *arrIndices = new GLushort[indices.size()];
+    copy(indices.begin(),indices.end(),arrIndices);
+    // Transfer index data to VBO 1
+    indexBuf.bind();
+    indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
+    indexBuf.release();
+     delete[] arrIndices;
+
+
+}
+
+int GeometryEngine::getStagesFromYPosition(float yPos){
+
+    int lastIndex = 0;
+
+    for(int i = figure.nbVerticesPerStage; i < nbrVertices; i+= figure.nbVerticesPerStage){
+
+        if(abs(vertices[i].position.y() - yPos) > abs(vertices[lastIndex].position.y() - yPos)){
+            return lastIndex;
+        }
+
+        else {
+            lastIndex = i;
+        }
+
+    }
+
+}
+
+//! [2]
 void GeometryEngine::initGeometry() {
     refreshGeometry();
 }
