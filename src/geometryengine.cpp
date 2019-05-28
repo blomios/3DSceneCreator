@@ -54,6 +54,35 @@
 #include <QVector3D>
 #include <math.h>
 
+struct VertexData
+{
+    QVector3D position;
+    QVector3D color;
+};
+
+struct FigureData
+{
+    int nbVerticesPerStage;
+    int nbStages;
+};
+
+#define PI 3.14159265
+
+FigureData figure;
+
+
+std::vector<VertexData> vertices = {
+};
+
+int nbrVertices = 0;
+
+std::vector<GLushort> indices = {
+};
+
+int nbrIndices = 0;
+
+
+//! [0]
 GeometryEngine::GeometryEngine()
     : indexBuf(QOpenGLBuffer::IndexBuffer)
 {
@@ -72,13 +101,14 @@ GeometryEngine::~GeometryEngine()
     arrayBuf.destroy();
     indexBuf.destroy();
 }
+//! [0]
 
 //Refresh geometry when form proprieties is changed
-void GeometryEngine::refreshGeometry() {
+void GeometryEngine::refreshGeometry(){
 
     //Set manualy form proprieties (it will be deleted when the interface will be created)
-    figure.nbStages = this->nbOfStages;
-    figure.nbVerticesPerStage = this->nbOfVerticesPerStage;
+    figure.nbStages = 100;
+    figure.nbVerticesPerStage = 100;
 
     //Init vertices and indices number to 0
     nbrIndices = 0;
@@ -91,7 +121,7 @@ void GeometryEngine::refreshGeometry() {
             float x = cos( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i );
             float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i ) ;
             QVector3D color = QVector3D(1.0f, abs(x),0.0f);
-             //qDebug() << color;
+             qDebug() << color;
 
             vertices.push_back( {QVector3D(
                                  x, //X position
@@ -127,28 +157,30 @@ void GeometryEngine::refreshGeometry() {
         }
     }
 
-    //delete arr;
-    arr = new VertexData[vertices.size()];
+}
+
+void GeometryEngine::initGeometry()
+{
+////! [1]
+    // Transfer vertex data to VBO 0
+
+    refreshGeometry();
+
+    VertexData *arr = new VertexData[vertices.size()];
     copy(vertices.begin(),vertices.end(),arr);
     arrayBuf.bind();
     arrayBuf.allocate(arr, nbrVertices * sizeof(VertexData));
 
-    //delete arrIndices;
-    arrIndices = new GLushort[indices.size()];
+
+    GLushort *arrIndices = new GLushort[indices.size()];
     copy(indices.begin(),indices.end(),arrIndices);
     // Transfer index data to VBO 1
     indexBuf.bind();
     indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
-
 }
 
-void GeometryEngine::initGeometry() {
-    refreshGeometry();
-}
-
-void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
-    refreshGeometry();
-
+void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
+{
     // Tell OpenGL which VBOs to use
     arrayBuf.bind();
     indexBuf.bind();

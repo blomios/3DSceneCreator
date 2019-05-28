@@ -56,8 +56,6 @@
 #include <QOpenGLBuffer>
 #include <QSlider>
 
-#define PI 3.14159265
-
 class GeometryEngine : protected QOpenGLFunctions
 {
 public:
@@ -75,38 +73,11 @@ public:
 private:
     void initGeometry();
 
-    struct VertexData
-    {
-        QVector3D position;
-        QVector3D color;
-    };
-
-    struct FigureData
-    {
-        int nbVerticesPerStage;
-        int nbStages;
-    };
-
-    // Vertices
-    int nbrVertices = 0;
-    std::vector<VertexData> vertices = {
-    };
-
-    // Indices
-    int nbrIndices = 0;
-    std::vector<GLushort> indices = {
-    };
-
-    // Buffers
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
-    VertexData *arr;
-    GLushort *arrIndices;
-    FigureData figure;
 
     // Object's parameters
     int nbOfStages;
     int nbOfVerticesPerStage;
 };
-
 #endif // GEOMETRYENGINE_H
