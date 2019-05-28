@@ -58,7 +58,20 @@
 class GeometryEngine : protected QOpenGLFunctions
 {
 public:
+    struct FigureData
+    {
+        int nbVerticesPerStage;
+        int nbStages;
+    };
+
+    struct VertexData
+    {
+        QVector3D position;
+        QVector3D color;
+    };
+
     GeometryEngine();
+    GeometryEngine(FigureData data);
     virtual ~GeometryEngine();
 
     void drawGeometry(QOpenGLShaderProgram *program);
@@ -67,10 +80,17 @@ public:
 
 private:
     void initGeometry();
-
-
+    FigureData figure;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
+
+    std::vector<VertexData> vertices;
+    std::vector<GLushort> indices;
+
+    int nbrVertices = 0;
+
+    int nbrIndices = 0;
+
 };
 
 #endif // GEOMETRYENGINE_H

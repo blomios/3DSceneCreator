@@ -54,38 +54,33 @@
 #include <QVector3D>
 #include <math.h>
 
-struct VertexData
-{
-    QVector3D position;
-    QVector3D color;
-};
 
-struct FigureData
-{
-    int nbVerticesPerStage;
-    int nbStages;
-};
 
 #define PI 3.14159265
-
-FigureData figure;
-
-
-std::vector<VertexData> vertices = {
-};
-
-int nbrVertices = 0;
-
-std::vector<GLushort> indices = {
-};
-
-int nbrIndices = 0;
 
 
 //! [0]
 GeometryEngine::GeometryEngine()
     : indexBuf(QOpenGLBuffer::IndexBuffer)
 {
+    figure.nbStages = 100;
+    figure.nbVerticesPerStage = 100;
+
+    initializeOpenGLFunctions();
+
+    // Generate 2 VBOs
+    arrayBuf.create();
+    indexBuf.create();
+
+    // Initializes cube geometry and transfers it to VBOs
+    initGeometry();
+}
+
+GeometryEngine::GeometryEngine(FigureData data)
+    : indexBuf(QOpenGLBuffer::IndexBuffer)
+{
+    figure = data;
+
     initializeOpenGLFunctions();
 
     // Generate 2 VBOs
@@ -107,8 +102,7 @@ GeometryEngine::~GeometryEngine()
 void GeometryEngine::refreshGeometry(){
 
     //Set manualy form proprieties (it will be deleted when the interface will be created)
-    figure.nbStages = 100;
-    figure.nbVerticesPerStage = 100;
+
 
     //Init vertices and indices number to 0
     nbrIndices = 0;
@@ -121,7 +115,6 @@ void GeometryEngine::refreshGeometry(){
             float x = cos( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i );
             float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i ) ;
             QVector3D color = QVector3D(1.0f, abs(x),0.0f);
-             qDebug() << color;
 
             vertices.push_back( {QVector3D(
                                  x, //X position
@@ -170,6 +163,8 @@ void GeometryEngine::initGeometry()
     copy(vertices.begin(),vertices.end(),arr);
     arrayBuf.bind();
     arrayBuf.allocate(arr, nbrVertices * sizeof(VertexData));
+    arrayBuf.release();
+    delete[] arr;
 
 
     GLushort *arrIndices = new GLushort[indices.size()];
@@ -177,6 +172,8 @@ void GeometryEngine::initGeometry()
     // Transfer index data to VBO 1
     indexBuf.bind();
     indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
+    indexBuf.release();
+     delete[] arrIndices;
 //! [1]
 }
 
@@ -184,6 +181,8 @@ void GeometryEngine::initGeometry()
 void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
 {
     // Tell OpenGL which VBOs to use
+
+
     arrayBuf.bind();
     indexBuf.bind();
 
@@ -205,6 +204,10 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
     program->setAttributeBuffer(colorLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
 
     // Draw cube geometry using indices from VBO 1
+
     glDrawElements(GL_TRIANGLES, nbrIndices, GL_UNSIGNED_SHORT, 0);
+    arrayBuf.release();
+    indexBuf.release();
+
 }
 //! [2]
