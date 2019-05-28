@@ -168,6 +168,11 @@ void MainWidget::initShaders()
     if (!program.bind())
         close();
 }
+
+GeometryEngine *MainWidget::getGeometries() const
+{
+    return geometries;
+}
 //! [3]
 
 
@@ -205,4 +210,14 @@ void MainWidget::paintGL()
 
     // Draw cube geometry
     geometries->drawGeometry(&program);
+}
+
+void MainWidget::setNbOfStages(int stages) {
+    this->nbOfStages = stages;
+    this->geometries->setNbOfStages(stages);
+}
+
+void MainWidget::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
+    this->nbOfVerticesPerStage = nbOfVerticesPerStage;
+    this->geometries->setNbOfVerticesPerStage(nbOfVerticesPerStage);
 }

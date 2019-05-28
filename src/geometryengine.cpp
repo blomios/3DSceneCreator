@@ -96,10 +96,9 @@ GeometryEngine::~GeometryEngine()
     arrayBuf.destroy();
     indexBuf.destroy();
 }
-//! [0]
 
 //Refresh geometry when form proprieties is changed
-void GeometryEngine::refreshGeometry(){
+void GeometryEngine::refreshGeometry() {
 
     //Set manualy form proprieties (it will be deleted when the interface will be created)
 
@@ -150,24 +149,16 @@ void GeometryEngine::refreshGeometry(){
         }
     }
 
-}
-
-void GeometryEngine::initGeometry()
-{
-////! [1]
-    // Transfer vertex data to VBO 0
-
-    refreshGeometry();
-
-    VertexData *arr = new VertexData[vertices.size()];
+    //delete arr;
+    arr = new VertexData[vertices.size()];
     copy(vertices.begin(),vertices.end(),arr);
     arrayBuf.bind();
     arrayBuf.allocate(arr, nbrVertices * sizeof(VertexData));
     arrayBuf.release();
     delete[] arr;
 
-
-    GLushort *arrIndices = new GLushort[indices.size()];
+    //delete arrIndices;
+    arrIndices = new GLushort[indices.size()];
     copy(indices.begin(),indices.end(),arrIndices);
     // Transfer index data to VBO 1
     indexBuf.bind();
@@ -177,9 +168,13 @@ void GeometryEngine::initGeometry()
 //! [1]
 }
 
-//! [2]
-void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
-{
+void GeometryEngine::initGeometry() {
+    refreshGeometry();
+}
+
+void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
+    refreshGeometry();
+
     // Tell OpenGL which VBOs to use
 
 
@@ -210,4 +205,11 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
     indexBuf.release();
 
 }
-//! [2]
+
+void GeometryEngine::setNbOfStages(int nbOfStages) {
+    this->nbOfStages = nbOfStages;
+}
+
+void GeometryEngine::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
+    this->nbOfVerticesPerStage = nbOfVerticesPerStage;
+}

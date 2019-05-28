@@ -54,6 +54,9 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
+#include <QSlider>
+
+#define PI 3.14159265
 
 class GeometryEngine : protected QOpenGLFunctions
 {
@@ -77,6 +80,10 @@ public:
     void drawGeometry(QOpenGLShaderProgram *program);
 
     void refreshGeometry();
+
+    void setNbOfStages(int nbOfStages);
+
+    void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
 
 private:
     void initGeometry();
