@@ -64,6 +64,12 @@ public:
         int nbStages;
     };
 
+    struct VertexData
+    {
+        QVector3D position;
+        QVector3D color;
+    };
+
     GeometryEngine();
     GeometryEngine(FigureData data);
     virtual ~GeometryEngine();
@@ -77,6 +83,14 @@ private:
     FigureData figure;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
+
+    std::vector<VertexData> vertices;
+    std::vector<GLushort> indices;
+
+    int nbrVertices = 0;
+
+    int nbrIndices = 0;
+
 };
 
 #endif // GEOMETRYENGINE_H

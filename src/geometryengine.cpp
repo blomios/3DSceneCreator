@@ -54,23 +54,9 @@
 #include <QVector3D>
 #include <math.h>
 
-struct VertexData
-{
-    QVector3D position;
-    QVector3D color;
-};
+
 
 #define PI 3.14159265
-
-std::vector<VertexData> vertices = {
-};
-
-int nbrVertices = 0;
-
-std::vector<GLushort> indices = {
-};
-
-int nbrIndices = 0;
 
 
 //! [0]
@@ -178,6 +164,7 @@ void GeometryEngine::initGeometry()
     arrayBuf.bind();
     arrayBuf.allocate(arr, nbrVertices * sizeof(VertexData));
     arrayBuf.release();
+    delete[] arr;
 
 
     GLushort *arrIndices = new GLushort[indices.size()];
@@ -186,6 +173,7 @@ void GeometryEngine::initGeometry()
     indexBuf.bind();
     indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
     indexBuf.release();
+     delete[] arrIndices;
 //! [1]
 }
 

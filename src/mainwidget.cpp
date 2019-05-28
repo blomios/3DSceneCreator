@@ -132,8 +132,15 @@ void MainWidget::initializeGL()
     //glEnable(GL_CULL_FACE);
 //! [2]
     GeometryEngine::FigureData figure;
-    figure.nbStages = 50;
-    figure.nbVerticesPerStage = 50;
+    figure.nbStages = 10;
+    figure.nbVerticesPerStage = 10;
+
+    geometries = new GeometryEngine(figure);
+
+    delete geometries;
+
+    figure.nbStages = 100;
+    figure.nbVerticesPerStage = 100;
 
     geometries = new GeometryEngine(figure);
 
