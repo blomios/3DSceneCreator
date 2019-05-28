@@ -56,8 +56,6 @@
 #include <QOpenGLBuffer>
 #include <QSlider>
 
-#define PI 3.14159265
-
 class GeometryEngine : protected QOpenGLFunctions
 {
 public:
@@ -99,5 +97,4 @@ private:
     int nbrIndices = 0;
 
 };
-
 #endif // GEOMETRYENGINE_H

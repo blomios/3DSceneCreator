@@ -96,9 +96,10 @@ GeometryEngine::~GeometryEngine()
     arrayBuf.destroy();
     indexBuf.destroy();
 }
+//! [0]
 
 //Refresh geometry when form proprieties is changed
-void GeometryEngine::refreshGeometry() {
+void GeometryEngine::refreshGeometry(){
 
     //Set manualy form proprieties (it will be deleted when the interface will be created)
 
@@ -168,13 +169,8 @@ void GeometryEngine::refreshGeometry() {
 //! [1]
 }
 
-void GeometryEngine::initGeometry() {
-    refreshGeometry();
-}
-
-void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
-    refreshGeometry();
-
+void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
+{
     // Tell OpenGL which VBOs to use
 
 
