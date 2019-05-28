@@ -73,13 +73,26 @@ public:
         QVector3D color;
     };
 
+    struct BottleNeck
+    {
+        float yPos;
+        float xSize;
+        float ySize;
+    };
+
     GeometryEngine();
     GeometryEngine(FigureData data);
     virtual ~GeometryEngine();
 
     void drawGeometry(QOpenGLShaderProgram *program);
 
-    void setBottleNeck(float yPos, float xSize, float ySize);
+    void addBottleNeck(float yPos, float xSize, float ySize);
+
+    void updateBottleNeck(int bnIndex, float yPos, float xSize, float ySize);
+
+    void removeBottleNeck(int bnIndex, bool deleteBnFromTheList);
+
+    std::vector<BottleNeck> bottleNecks;
 
     void refreshGeometry();
 
@@ -91,6 +104,7 @@ private:
     void initGeometry();
     int getStagesFromYPosition(float yPos);
 
+    void setBottleNeck(float yPos, float xSize, float ySize);
 
     FigureData figure;
     QOpenGLBuffer arrayBuf;
@@ -98,6 +112,8 @@ private:
 
     std::vector<VertexData> vertices;
     std::vector<GLushort> indices;
+
+
 
     int nbrVertices = 0;
 

@@ -174,6 +174,84 @@ void GeometryEngine::refreshGeometry(){
 //! [1]
 }
 
+void GeometryEngine::removeBottleNeck(int bnIndex, bool deleteBnFromTheList){
+
+    float yPos = bottleNecks[bnIndex].yPos;
+    float xSize = bottleNecks[bnIndex].xSize;
+    float ySize = bottleNecks[bnIndex].ySize;
+
+    int initialIndex = getStagesFromYPosition(yPos);
+
+    int index = 0;
+
+    float coeff = 1/xSize;
+
+    while(initialIndex+index < vertices.size() && initialIndex - index >=0 && abs(vertices[initialIndex + index].position.y() - yPos) < ySize){
+
+        float coeffSec = coeff *  cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
+
+        if(coeffSec >= 1){
+            vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() * (coeffSec ) );
+            vertices[initialIndex - index].position.setZ( vertices[initialIndex - index].position.z() * (coeffSec ) );
+
+            vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() * (coeffSec ) );
+            vertices[initialIndex - index].position.setX( vertices[initialIndex - index].position.x() * (coeffSec ) );
+        }
+
+
+
+        index++;
+
+    }
+
+    arrayBuf.destroy();
+    indexBuf.destroy();
+
+    arrayBuf.create();
+    indexBuf.create();
+
+    VertexData *arr = new VertexData[vertices.size()];
+    copy(vertices.begin(),vertices.end(),arr);
+    arrayBuf.bind();
+    arrayBuf.allocate(arr, nbrVertices * sizeof(VertexData));
+    arrayBuf.release();
+    delete[] arr;
+
+
+    GLushort *arrIndices = new GLushort[indices.size()];
+    copy(indices.begin(),indices.end(),arrIndices);
+    // Transfer index data to VBO 1
+    indexBuf.bind();
+    indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
+    indexBuf.release();
+     delete[] arrIndices;
+
+    if(deleteBnFromTheList)
+        bottleNecks.erase(bottleNecks.begin()+bnIndex);
+
+}
+
+void GeometryEngine::updateBottleNeck(int bnIndex, float yPos, float xSize, float ySize){
+
+    removeBottleNeck(bnIndex, false);
+
+    setBottleNeck(yPos, xSize, ySize);
+
+    bottleNecks[bnIndex] = { yPos,  xSize,  ySize};
+
+
+}
+
+void GeometryEngine::addBottleNeck(float yPos, float xSize, float ySize){
+
+    BottleNeck bn = {yPos, xSize, ySize};
+
+    bottleNecks.push_back(bn);
+
+    setBottleNeck(yPos, xSize, ySize);
+
+}
+
 void GeometryEngine::setBottleNeck(float yPos, float xSize, float ySize){
 
     int initialIndex = getStagesFromYPosition(yPos);
@@ -221,7 +299,6 @@ void GeometryEngine::setBottleNeck(float yPos, float xSize, float ySize){
     indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
     indexBuf.release();
      delete[] arrIndices;
-
 
 }
 
