@@ -79,7 +79,7 @@
      <item>
       <widget class="QSlider" name="verticesPerStageSlider">
        <property name="maximum">
-        <number>1000</number>
+        <number>100</number>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

@@ -150,7 +150,7 @@ void GeometryEngine::refreshGeometry() {
     }
 
     //delete arr;
-    arr = new VertexData[vertices.size()];
+    VertexData *arr = new VertexData[vertices.size()];
     copy(vertices.begin(),vertices.end(),arr);
     arrayBuf.bind();
     arrayBuf.allocate(arr, nbrVertices * sizeof(VertexData));
@@ -158,7 +158,7 @@ void GeometryEngine::refreshGeometry() {
     delete[] arr;
 
     //delete arrIndices;
-    arrIndices = new GLushort[indices.size()];
+    GLushort *arrIndices = new GLushort[indices.size()];
     copy(indices.begin(),indices.end(),arrIndices);
     // Transfer index data to VBO 1
     indexBuf.bind();
@@ -207,9 +207,31 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
 }
 
 void GeometryEngine::setNbOfStages(int nbOfStages) {
-    this->nbOfStages = nbOfStages;
+    vertices.clear();
+    indices.clear();
+    arrayBuf.destroy();
+    indexBuf.destroy();
+
+    figure.nbStages = nbOfStages;
+
+    arrayBuf.create();
+    indexBuf.create();
+
+    // Initializes cube geometry and transfers it to VBOs
+    initGeometry();
 }
 
 void GeometryEngine::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
-    this->nbOfVerticesPerStage = nbOfVerticesPerStage;
+    vertices.clear();
+    indices.clear();
+    arrayBuf.destroy();
+    indexBuf.destroy();
+
+    figure.nbVerticesPerStage = nbOfVerticesPerStage;
+
+    arrayBuf.create();
+    indexBuf.create();
+
+    // Initializes cube geometry and transfers it to VBOs
+    initGeometry();
 }
