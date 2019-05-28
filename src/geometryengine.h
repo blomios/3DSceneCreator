@@ -76,10 +76,15 @@ public:
 
     void drawGeometry(QOpenGLShaderProgram *program);
 
+    void setBottleNeck(float yPos, float xSize, float ySize);
+
     void refreshGeometry();
 
 private:
     void initGeometry();
+    int getStagesFromYPosition(float yPos);
+
+
     FigureData figure;
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
