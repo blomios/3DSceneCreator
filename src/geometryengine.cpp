@@ -169,8 +169,13 @@ void GeometryEngine::refreshGeometry(){
 //! [1]
 }
 
+void GeometryEngine::initGeometry() {
+    refreshGeometry();
+}
+
 void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
 {
+    refreshGeometry();
     // Tell OpenGL which VBOs to use
 
 

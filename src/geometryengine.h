@@ -56,6 +56,8 @@
 #include <QOpenGLBuffer>
 #include <QSlider>
 
+#define PI 3.14159265
+
 class GeometryEngine : protected QOpenGLFunctions
 {
 public:
