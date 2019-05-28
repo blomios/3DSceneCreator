@@ -30,7 +30,7 @@
       <x>770</x>
       <y>10</y>
       <width>231</width>
-      <height>181</height>
+      <height>511</height>
      </rect>
     </property>
     <property name="title">
@@ -49,20 +49,13 @@
       <property name="sizeConstraint">
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
-      <item row="3" column="1">
-       <widget class="QSpinBox" name="verticesPerStageSpinBox">
-        <property name="maximum">
-         <number>1000</number>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1">
        <widget class="QSpinBox" name="nbOfStagesSpinBox">
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
         <property name="maximum">
-         <number>1000</number>
+         <number>100</number>
         </property>
        </widget>
       </item>
@@ -95,7 +88,7 @@
       <item row="1" column="0">
        <widget class="QSlider" name="nbOfStagesSlider">
         <property name="maximum">
-         <number>1000</number>
+         <number>100</number>
         </property>
         <property name="value">
          <number>10</number>
@@ -105,16 +98,119 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="verticesPerStageSpinBox">
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QSlider" name="verticesPerStageSlider">
         <property name="maximum">
-         <number>1000</number>
+         <number>100</number>
         </property>
         <property name="value">
          <number>10</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>211</width>
+       <height>181</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Bottleneck parameters</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="bottleneckPositionLabel">
+        <property name="text">
+         <string>Bottleneck position :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QSlider" name="bottleneckPositionSlider">
+        <property name="minimum">
+         <number>-5</number>
+        </property>
+        <property name="maximum">
+         <number>5</number>
+        </property>
+        <property name="singleStep">
+         <number>0</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="bottleneckPositionSpinBox">
+        <property name="minimum">
+         <number>-5</number>
+        </property>
+        <property name="maximum">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="bottleneckYSizeLabel">
+        <property name="text">
+         <string>Y-Size :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QSlider" name="bottleneckYSizeSlider">
+        <property name="maximum">
+         <number>5</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="bottleneckYSizeSpinBox">
+        <property name="maximum">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="bottleneckXSizeLabel">
+        <property name="text">
+         <string>X-Size :</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QSlider" name="bottleneckXSizeSlider">
+        <property name="maximum">
+         <number>1</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="bottleneckXSizeSpinBox">
+        <property name="maximum">
+         <number>1</number>
         </property>
        </widget>
       </item>
