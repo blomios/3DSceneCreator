@@ -94,17 +94,21 @@ public:
 
     std::vector<BottleNeck> bottleNecks;
 
-    void refreshGeometry();
-
     void setNbOfStages(int nbOfStages);
 
     void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
 
 private:
+
     void initGeometry();
+
+    void placePointsOriginalPosition();
+
     int getStagesFromYPosition(float yPos);
 
     void setBottleNeck(float yPos, float xSize, float ySize);
+
+    void setBuffers();
 
     FigureData figure;
     QOpenGLBuffer arrayBuf;

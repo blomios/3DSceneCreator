@@ -98,40 +98,39 @@ GeometryEngine::~GeometryEngine()
 }
 //! [0]
 
-//Refresh geometry when form proprieties is changed
-void GeometryEngine::refreshGeometry(){
+//Place the original point positions
+void GeometryEngine::placePointsOriginalPosition(){
 
-    //Set manualy form proprieties (it will be deleted when the interface will be created)
-
-
-    //Init vertices and indices number to 0
+    //set nb indices and vertices to 0
     nbrIndices = 0;
     nbrVertices = 0;
 
-    //Create vertices tab with the differents form proprieties
+    //Set position of each vertices
     for(int i = 0; i <= figure.nbStages; i++){
-
 
         for(int j = 0; j < figure.nbVerticesPerStage; j++){
 
             float x = cos( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i );
             float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i ) ;
-            QVector3D color = QVector3D(1.0f, abs(x),0.0f);
 
+            QVector3D color = QVector3D(1.0f, abs(x),0.0f); //Set a color with a nice gradient color :p
+
+            //Add the created vertice in the tab
             VertexData vertex = {QVector3D(
                                  x, //X position
                                  (2.5f / (figure.nbStages+1)) * i - 2.5f/2, //Y position
                                  z), //Z position
                                  color};
 
-            vertices.push_back( vertex); //color
+            vertices.push_back( vertex);
 
+            //Increase vertices nbr
             nbrVertices++;
         }
     }
 
 
-    //create indices tab withe the differents form proprieties
+    //Set indices tab (link the vertices of stage N withe the vertices of stage N+1 to create faces) don't touch it is working... I think
     for(int i = 1; i <= figure.nbStages; i++){
         for(int j = 0; j < figure.nbVerticesPerStage; j++){
 
@@ -155,7 +154,13 @@ void GeometryEngine::refreshGeometry(){
         }
     }
 
-    //delete arr;
+    setBuffers();
+}
+
+//Set the buffers, don't touch it's working too
+void GeometryEngine::setBuffers(){
+
+    //Set vertex buffer
     VertexData *arr = new VertexData[vertices.size()];
     copy(vertices.begin(),vertices.end(),arr);
     arrayBuf.bind();
@@ -163,17 +168,17 @@ void GeometryEngine::refreshGeometry(){
     arrayBuf.release();
     delete[] arr;
 
-    //delete arrIndices;
+    //Set indeces buffer
     GLushort *arrIndices = new GLushort[indices.size()];
     copy(indices.begin(),indices.end(),arrIndices);
-    // Transfer index data to VBO 1
     indexBuf.bind();
     indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
     indexBuf.release();
      delete[] arrIndices;
-//! [1]
+
 }
 
+//Remove a bottleneck
 void GeometryEngine::removeBottleNeck(int bnIndex, bool deleteBnFromTheList){
 
     float yPos = bottleNecks[bnIndex].yPos;
@@ -210,21 +215,7 @@ void GeometryEngine::removeBottleNeck(int bnIndex, bool deleteBnFromTheList){
     arrayBuf.create();
     indexBuf.create();
 
-    VertexData *arr = new VertexData[vertices.size()];
-    copy(vertices.begin(),vertices.end(),arr);
-    arrayBuf.bind();
-    arrayBuf.allocate(arr, nbrVertices * sizeof(VertexData));
-    arrayBuf.release();
-    delete[] arr;
-
-
-    GLushort *arrIndices = new GLushort[indices.size()];
-    copy(indices.begin(),indices.end(),arrIndices);
-    // Transfer index data to VBO 1
-    indexBuf.bind();
-    indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
-    indexBuf.release();
-     delete[] arrIndices;
+    setBuffers();
 
     if(deleteBnFromTheList)
         bottleNecks.erase(bottleNecks.begin()+bnIndex);
@@ -284,24 +275,11 @@ void GeometryEngine::setBottleNeck(float yPos, float xSize, float ySize){
     arrayBuf.create();
     indexBuf.create();
 
-    VertexData *arr = new VertexData[vertices.size()];
-    copy(vertices.begin(),vertices.end(),arr);
-    arrayBuf.bind();
-    arrayBuf.allocate(arr, nbrVertices * sizeof(VertexData));
-    arrayBuf.release();
-    delete[] arr;
-
-
-    GLushort *arrIndices = new GLushort[indices.size()];
-    copy(indices.begin(),indices.end(),arrIndices);
-    // Transfer index data to VBO 1
-    indexBuf.bind();
-    indexBuf.allocate(arrIndices, nbrIndices * sizeof(GLushort));
-    indexBuf.release();
-     delete[] arrIndices;
+    setBuffers();
 
 }
 
+//Get the closest stage from the y pos entered
 int GeometryEngine::getStagesFromYPosition(float yPos){
 
     int lastIndex = 0;
@@ -320,14 +298,15 @@ int GeometryEngine::getStagesFromYPosition(float yPos){
 
 }
 
-//! [2]
+//Initialize the geometry
 void GeometryEngine::initGeometry() {
-    refreshGeometry();
+    placePointsOriginalPosition();
 }
 
+//Draw the geometry
 void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
 {
-    refreshGeometry();
+    placePointsOriginalPosition();
     // Tell OpenGL which VBOs to use
 
 
@@ -372,6 +351,12 @@ void GeometryEngine::setNbOfStages(int nbOfStages) {
 
     // Initializes cube geometry and transfers it to VBOs
     initGeometry();
+
+    for(int i = 0; i < bottleNecks.size(); i++){
+
+        setBottleNeck(bottleNecks[i].yPos, bottleNecks[i].xSize, bottleNecks[i].ySize);
+
+    }
 }
 
 void GeometryEngine::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
@@ -387,4 +372,10 @@ void GeometryEngine::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
 
     // Initializes cube geometry and transfers it to VBOs
     initGeometry();
+
+    for(int i = 0; i < bottleNecks.size(); i++){
+
+        setBottleNeck(bottleNecks[i].yPos, bottleNecks[i].xSize, bottleNecks[i].ySize);
+
+    }
 }

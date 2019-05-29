@@ -135,13 +135,19 @@ void MainWidget::initializeGL()
     figure.nbStages = 100;
     figure.nbVerticesPerStage = 100;
 
+    //Create a geometry
     geometries = new GeometryEngine(figure);
 
+    //Add a bottle neck
     geometries->addBottleNeck( - 0.5, 0.2,0.2);
+
+    //Add an other bottleneck
     geometries->addBottleNeck(  0.5, 0.2,0.2);
 
+    //remove the first bottleneck
     geometries->removeBottleNeck(0, true);
 
+    //remove the last bottleneck
     geometries->updateBottleNeck(0, 0, 0.2,0.2);
 
     // Use QBasicTimer because its faster than QTimer
