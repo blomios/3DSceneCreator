@@ -24,16 +24,19 @@ MainWindow::MainWindow(QWidget *parent) :
     this->bottleneckPositionSpinBox = ui->bottleneckPositionDoubleSpinBox;
     QObject::connect(bottleneckPositionSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckPositionConversionToSpinBox(int)));
     QObject::connect(bottleneckPositionSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckPositionConversionToSlider(double)));
+    QObject::connect(bottleneckPositionSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
     // Bottleneck X-size
     this->bottleneckXSizeSlider = ui->bottleneckXSizeSlider;
     this->bottleneckXSizeSpinBox = ui->bottleneckXSizeDoubleSpinBox;
     QObject::connect(bottleneckXSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckXSizeConversionToSpinBox(int)));
     QObject::connect(bottleneckXSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckXSizeConversionToSlider(double)));
+    QObject::connect(bottleneckXSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
     // Bottleneck Y-size
     this->bottleneckYSizeSlider = ui->bottleneckYSizeSlider;
     this->bottleneckYSizeSpinBox = ui->bottleneckYSizeDoubleSpinBox;
     QObject::connect(bottleneckYSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckYSizeConversionToSpinBox(int)));
     QObject::connect(bottleneckYSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckYSizeConversionToSlider(double)));
+    QObject::connect(bottleneckYSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
 }
 
 MainWindow::~MainWindow() {
@@ -62,4 +65,14 @@ void MainWindow::bottleneckYSizeConversionToSpinBox(int value) {
 
 void MainWindow::bottleneckYSizeConversionToSlider(double value) {
     this->bottleneckYSizeSlider->setValue(static_cast<int>(value * 10));
+}
+
+void MainWindow::updateBottlenecks(double value) {
+    if (sender() == bottleneckPositionSpinBox) {
+        ui->GLWidget->updateBottlenecks(0, value, bottleneckXSizeSpinBox->value(), bottleneckYSizeSpinBox->value());
+    } else if (sender() == bottleneckXSizeSpinBox) {
+        ui->GLWidget->updateBottlenecks(0, bottleneckPositionSpinBox->value(), value, bottleneckYSizeSpinBox->value());
+    } else if (sender() == bottleneckYSizeSpinBox) {
+        ui->GLWidget->updateBottlenecks(0, bottleneckPositionSpinBox->value(), bottleneckXSizeSpinBox->value(), value);
+    }
 }

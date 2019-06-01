@@ -226,3 +226,9 @@ void MainWidget::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
     this->nbOfVerticesPerStage = nbOfVerticesPerStage;
     this->geometries->setNbOfVerticesPerStage(nbOfVerticesPerStage);
 }
+
+void MainWidget::updateBottlenecks(int index, double position, double xSize, double ySize) {
+    if (position != -1 && xSize != -1 && ySize != -1) {
+        this->geometries->updateBottleNeck(index, position, xSize, ySize);
+    }
+}

@@ -49,6 +49,11 @@ public slots:
      * @param value the double value to convert and pass
      */
     void bottleneckYSizeConversionToSlider(double value);
+    /**
+     * @brief Manages bottlenecks link between ui and model
+     * @param value
+     */
+    void updateBottlenecks(double value);
 
 private:
     Ui::MainWindow *ui;
