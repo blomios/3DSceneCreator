@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,15 +18,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QSpinBox* verticesPerStageSpinBox = ui->verticesPerStageSpinBox;
     QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), verticesPerStageSpinBox, SLOT(setValue(int)));
     QObject::connect(verticesPerStageSpinBox, SIGNAL(valueChanged(int)), verticesPerStageSlider, SLOT(setValue(int)));
-
-    // Connects the sliders to the widget
-    QObject::connect(nbOfStagesSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfStages(int)));
     QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfVerticesPerStage(int)));
     // Bottleneck position
-    QSlider* bottleneckPositionSlider = ui->bottleneckPositionSlider;
-    QDoubleSpinBox* bottleneckPositionSpinBox = ui->bottleneckPositionDoubleSpinBox;
-    QObject::connect(bottleneckPositionSlider, SIGNAL(valueChanged(int)), bottleneckPositionSpinBox, SLOT(setValue(double)));
-    QObject::connect(bottleneckPositionSpinBox, SIGNAL(valueChanged(double)), bottleneckPositionSlider, SLOT(setValue(int)));
+    this->bottleneckPositionSlider = ui->bottleneckPositionSlider;
+    this->bottleneckPositionSpinBox = ui->bottleneckPositionDoubleSpinBox;
+    QObject::connect(bottleneckPositionSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckPositionConversionToSpinBox(int)));
+    QObject::connect(bottleneckPositionSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckPositionConversionToSlider(double)));
     // Bottleneck X-size
     QSlider* bottleneckXSizeSlider = ui->bottleneckXSizeSlider;
     QDoubleSpinBox* bottleneckXSizeSpinBox = ui->bottleneckXSizeDoubleSpinBox;
@@ -38,15 +34,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QDoubleSpinBox* bottleneckYSizeSpinBox = ui->bottleneckYSizeDoubleSpinBox;
     QObject::connect(bottleneckYSizeSlider, SIGNAL(valueChanged(int)), bottleneckYSizeSpinBox, SLOT(setValue(double)));
     QObject::connect(bottleneckYSizeSpinBox, SIGNAL(valueChanged(double)), bottleneckYSizeSlider, SLOT(setValue(int)));
-
-    // Connects the spinboxes and the sliders together
-    QObject::connect(nbOfStagesSlider,  SIGNAL(valueChanged(int)), nbOfStagesSpinBox, SLOT(setValue(int)));
-    QObject::connect(nbOfStagesSpinBox,  SIGNAL(valueChanged(int)), nbOfStagesSlider, SLOT(setValue(int)));
-    QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), verticesPerStageSpinBox, SLOT(setValue(int)));
-    QObject::connect(verticesPerStageSpinBox, SIGNAL(valueChanged(int)), verticesPerStageSlider, SLOT(setValue(int)));
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
+}
+
+void MainWindow::bottleneckPositionConversionToSpinBox(int value) {
+    this->bottleneckPositionSpinBox->setValue(static_cast<double>(value) / 10);
+}
+
+void MainWindow::bottleneckPositionConversionToSlider(double value) {
+    this->bottleneckPositionSlider->setValue(static_cast<int>(value * 10));
 }
