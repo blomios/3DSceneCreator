@@ -69,11 +69,10 @@ class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions
     Q_OBJECT
 
 public:
-    explicit MainWidget(QWidget *parent = 0);
-    ~MainWidget();
-
+    explicit MainWidget(QWidget *parent = nullptr);
+    ~MainWidget() override;
     GeometryEngine *getGeometries() const;
-
+    void updateBottlenecks(int index, double position, double xSize, double ySize);
 public slots:
     void setNbOfStages(int stages);
     void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
