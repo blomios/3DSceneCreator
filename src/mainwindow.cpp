@@ -76,3 +76,41 @@ void MainWindow::updateBottlenecks(double value) {
         ui->GLWidget->updateBottlenecks(0, bottleneckPositionSpinBox->value(), bottleneckXSizeSpinBox->value(), value);
     }
 }
+
+void MainWindow::on_addBottleneckButton_clicked() {
+    this->tempBottleneckGroupBox = new QGroupBox("Bottleneck parameters");
+    this->tempBottleneckGridLayout = new QGridLayout();
+    this->tempBottleneckGroupBox->setLayout(tempBottleneckGridLayout);
+
+    this->tempBottleneckPositionLabel = new QLabel("Position :");
+    this->tempBottleneckGridLayout->addWidget(this->tempBottleneckPositionLabel, 0, 0);
+    this->tempBottleneckPositionSlider = new QSlider(Qt::Horizontal);
+    this->tempBottleneckPositionSlider->setRange(-5, 5);
+    this->tempBottleneckGridLayout->addWidget(this->tempBottleneckPositionSlider, 1, 0);
+    this->tempBottleneckPositionSpinBox = new QDoubleSpinBox();
+    this->tempBottleneckPositionSpinBox->setRange(-0.5, 0.5);
+    this->tempBottleneckPositionSpinBox->setSingleStep(0.1);
+    this->tempBottleneckGridLayout->addWidget(this->tempBottleneckPositionSpinBox, 1, 1);
+
+    this->tempBottleneckXSizeLabel = new QLabel("X-Size :");
+    this->tempBottleneckGridLayout->addWidget(this->tempBottleneckXSizeLabel, 2, 0);
+    this->tempBottleneckXSizeSlider = new QSlider(Qt::Horizontal);
+    this->tempBottleneckXSizeSlider->setRange(-5, 5);
+    this->tempBottleneckGridLayout->addWidget(this->tempBottleneckXSizeSlider, 3, 0);
+    this->tempBottleneckXSizeSpinBox = new QDoubleSpinBox();
+    this->tempBottleneckXSizeSpinBox->setRange(-0.5, 0.5);
+    this->tempBottleneckXSizeSpinBox->setSingleStep(0.1);
+    this->tempBottleneckGridLayout->addWidget(this->tempBottleneckXSizeSpinBox, 3, 1);
+
+    this->tempBottleneckYSizeLabel = new QLabel("Y-Size :");
+    this->tempBottleneckGridLayout->addWidget(this->tempBottleneckYSizeLabel, 4, 0);
+    this->tempBottleneckYSizeSlider = new QSlider(Qt::Horizontal);
+    this->tempBottleneckYSizeSlider->setRange(-5, 5);
+    this->tempBottleneckGridLayout->addWidget(this->tempBottleneckYSizeSlider, 5, 0);
+    this->tempBottleneckYSizeSpinBox = new QDoubleSpinBox();
+    this->tempBottleneckXSizeSpinBox->setRange(-0.5, 0.5);
+    this->tempBottleneckXSizeSpinBox->setSingleStep(0.1);
+    this->tempBottleneckGridLayout->addWidget(this->tempBottleneckYSizeSpinBox, 5, 1);
+
+    this->ui->scrollLayout->addWidget(tempBottleneckGroupBox);
+}

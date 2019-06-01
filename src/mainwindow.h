@@ -55,6 +55,9 @@ public slots:
      */
     void updateBottlenecks(double value);
 
+private slots:
+    void on_addBottleneckButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     // Bottleneck position spin box
@@ -69,6 +72,20 @@ private:
     QSlider* bottleneckYSizeSlider;
     // Bottleneck Y size spin box
     QDoubleSpinBox* bottleneckYSizeSpinBox;
+
+
+    // TEMP
+    QGroupBox* tempBottleneckGroupBox;
+    QGridLayout* tempBottleneckGridLayout;
+    QDoubleSpinBox* tempBottleneckPositionSpinBox;
+    QSlider *tempBottleneckPositionSlider;
+    QLabel *tempBottleneckPositionLabel;
+    QDoubleSpinBox* tempBottleneckXSizeSpinBox;
+    QSlider *tempBottleneckXSizeSlider;
+    QLabel *tempBottleneckXSizeLabel;
+    QDoubleSpinBox* tempBottleneckYSizeSpinBox;
+    QSlider *tempBottleneckYSizeSlider;
+    QLabel *tempBottleneckYSizeLabel;
 };
 
 #endif // MAINWINDOW_H
