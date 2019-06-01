@@ -39,6 +39,16 @@ public slots:
      * @param value the double value to convert and pass
      */
     void bottleneckXSizeConversionToSlider(double value);
+    /**
+     * @brief Converts the int value to a double, divided by 10, and passes it to the bottleneck y size spin box
+     * @param value the int value to convert and pass
+     */
+    void bottleneckYSizeConversionToSpinBox(int value);
+    /**
+     * @brief Converts the double value to an int, multiplied by 10, and passes it to the bottleneck y size slider
+     * @param value the double value to convert and pass
+     */
+    void bottleneckYSizeConversionToSlider(double value);
 
 private:
     Ui::MainWindow *ui;
@@ -50,6 +60,10 @@ private:
     QSlider* bottleneckXSizeSlider;
     // Bottleneck X size spin box
     QDoubleSpinBox* bottleneckXSizeSpinBox;
+    // Bottleneck Y size slider
+    QSlider* bottleneckYSizeSlider;
+    // Bottleneck Y size spin box
+    QDoubleSpinBox* bottleneckYSizeSpinBox;
 };
 
 #endif // MAINWINDOW_H

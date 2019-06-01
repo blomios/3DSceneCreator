@@ -30,10 +30,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(bottleneckXSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckXSizeConversionToSpinBox(int)));
     QObject::connect(bottleneckXSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckXSizeConversionToSlider(double)));
     // Bottleneck Y-size
-    QSlider* bottleneckYSizeSlider = ui->bottleneckYSizeSlider;
-    QDoubleSpinBox* bottleneckYSizeSpinBox = ui->bottleneckYSizeDoubleSpinBox;
-    QObject::connect(bottleneckYSizeSlider, SIGNAL(valueChanged(int)), bottleneckYSizeSpinBox, SLOT(setValue(double)));
-    QObject::connect(bottleneckYSizeSpinBox, SIGNAL(valueChanged(double)), bottleneckYSizeSlider, SLOT(setValue(int)));
+    this->bottleneckYSizeSlider = ui->bottleneckYSizeSlider;
+    this->bottleneckYSizeSpinBox = ui->bottleneckYSizeDoubleSpinBox;
+    QObject::connect(bottleneckYSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckYSizeConversionToSpinBox(int)));
+    QObject::connect(bottleneckYSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckYSizeConversionToSlider(double)));
 }
 
 MainWindow::~MainWindow() {
@@ -54,4 +54,12 @@ void MainWindow::bottleneckXSizeConversionToSpinBox(int value) {
 
 void MainWindow::bottleneckXSizeConversionToSlider(double value) {
     this->bottleneckXSizeSlider->setValue(static_cast<int>(value * 10));
+}
+
+void MainWindow::bottleneckYSizeConversionToSpinBox(int value) {
+    this->bottleneckYSizeSpinBox->setValue(static_cast<double>(value) / 10);
+}
+
+void MainWindow::bottleneckYSizeConversionToSlider(double value) {
+    this->bottleneckYSizeSlider->setValue(static_cast<int>(value * 10));
 }
