@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <string>
 
 #include "mainwidget.h"
 #include "ui_mainwindow.h"
@@ -55,20 +56,59 @@ public slots:
      */
     void updateBottlenecks(double value);
 
+private slots:
+    void on_addBottleneckButton_clicked();
+    void removeBottleneckButtonClicked();
+
 private:
     Ui::MainWindow *ui;
-    // Bottleneck position spin box
-    QDoubleSpinBox* bottleneckPositionSpinBox;
-    // Bottleneck position slider
-    QSlider* bottleneckPositionSlider;
-    // Bottleneck X size slider
-    QSlider* bottleneckXSizeSlider;
-    // Bottleneck X size spin box
-    QDoubleSpinBox* bottleneckXSizeSpinBox;
-    // Bottleneck Y size slider
-    QSlider* bottleneckYSizeSlider;
-    // Bottleneck Y size spin box
-    QDoubleSpinBox* bottleneckYSizeSpinBox;
+
+    // Struct containing widgets to create the group boxes with bottleneck controls
+    struct BottleneckControls {
+        BottleneckControls() {
+            tempBottleneckGroupBox = nullptr;
+            tempBottleneckGridLayout = nullptr;
+            tempBottleneckPositionSpinBox = nullptr;
+            tempBottleneckPositionSlider = nullptr;
+            tempBottleneckPositionLabel = nullptr;
+            tempBottleneckXSizeSpinBox = nullptr;
+            tempBottleneckXSizeSlider = nullptr;
+            tempBottleneckXSizeLabel = nullptr;
+            tempBottleneckYSizeSpinBox = nullptr;
+            tempBottleneckYSizeSlider = nullptr;
+            tempBottleneckYSizeLabel = nullptr;
+        }
+        int bottleNeckIndex;
+
+        QGroupBox* tempBottleneckGroupBox;
+        QGridLayout* tempBottleneckGridLayout;
+
+        // Bottleneck position spin box
+        QDoubleSpinBox* tempBottleneckPositionSpinBox;
+        // Bottleneck position slider
+        QSlider *tempBottleneckPositionSlider;
+        // Bottleneck position label
+        QLabel *tempBottleneckPositionLabel;
+
+        // Bottleneck X size spin box
+        QDoubleSpinBox* tempBottleneckXSizeSpinBox;
+        // Bottleneck X size slider
+        QSlider *tempBottleneckXSizeSlider;
+        // Bottleneck X size label
+        QLabel *tempBottleneckXSizeLabel;
+
+        // Bottleneck Y size spin box
+        QDoubleSpinBox* tempBottleneckYSizeSpinBox;
+        // Bottleneck Y size slider
+        QSlider *tempBottleneckYSizeSlider;
+        // Bottleneck Y size label
+        QLabel *tempBottleneckYSizeLabel;
+
+        // Remove bottleneck button
+        QPushButton *bottleneckRemovePushButton;
+    };
+    // Vector containing the bottlenecks control widgets
+    std::vector<BottleneckControls> bottleneckWidgets;
 };
 
 #endif // MAINWINDOW_H
