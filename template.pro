@@ -22,4 +22,4 @@ RESOURCES += \
 DISTFILES +=
 
 FORMS += \
-    ui/mainwindow.ui
+    src/mainwindow.ui
