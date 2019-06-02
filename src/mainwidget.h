@@ -74,6 +74,7 @@ public:
     GeometryEngine *getGeometries() const;
     void updateBottlenecks(int index, double position, double xSize, double ySize);
     void addBottleneck(double position, double xSize, double ySize);
+    void removeBottleneck(int index);
 
 public slots:
     void setNbOfStages(int stages);

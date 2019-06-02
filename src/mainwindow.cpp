@@ -85,6 +85,33 @@ void MainWindow::updateBottlenecks(double value) {
     }
 }
 
+void MainWindow::removeBottleneckButtonClicked() {
+    for (BottleneckControls bottleneckControls : this->bottleneckWidgets) {
+        if (sender() == bottleneckControls.bottleneckRemovePushButton) {
+            this->ui->GLWidget->removeBottleneck(bottleneckControls.bottleNeckIndex);
+            // Updates IDs
+            for (int i = bottleneckControls.bottleNeckIndex + 1; i < this->bottleneckWidgets.size(); i++) {
+                this->bottleneckWidgets.at(i).bottleNeckIndex--;
+                this->bottleneckWidgets.at(i).tempBottleneckGroupBox->setTitle("Bottleneck #" + QString::number(this->bottleneckWidgets.at(i).bottleNeckIndex + 1) + " parameters");
+            }
+            this->ui->scrollLayout->removeWidget(bottleneckControls.tempBottleneckGroupBox);
+            this->bottleneckWidgets.erase(this->bottleneckWidgets.begin() + bottleneckControls.bottleNeckIndex);
+            delete bottleneckControls.tempBottleneckGridLayout;
+            delete bottleneckControls.tempBottleneckXSizeLabel;
+            delete bottleneckControls.tempBottleneckYSizeLabel;
+            delete bottleneckControls.tempBottleneckXSizeSlider;
+            delete bottleneckControls.tempBottleneckYSizeSlider;
+            delete bottleneckControls.bottleneckRemovePushButton;
+            delete bottleneckControls.tempBottleneckXSizeSpinBox;
+            delete bottleneckControls.tempBottleneckYSizeSpinBox;
+            delete bottleneckControls.tempBottleneckPositionLabel;
+            delete bottleneckControls.tempBottleneckPositionSlider;
+            delete bottleneckControls.tempBottleneckPositionSpinBox;
+            delete bottleneckControls.tempBottleneckGroupBox;
+        }
+    }
+}
+
 void MainWindow::on_addBottleneckButton_clicked() {
     BottleneckControls bottleneckControls;
 
@@ -125,6 +152,9 @@ void MainWindow::on_addBottleneckButton_clicked() {
     bottleneckControls.tempBottleneckXSizeSpinBox->setSingleStep(0.1);
     bottleneckControls.tempBottleneckGridLayout->addWidget(bottleneckControls.tempBottleneckYSizeSpinBox, 5, 1);
 
+    bottleneckControls.bottleneckRemovePushButton = new QPushButton("Remove the bottleneck");
+    bottleneckControls.tempBottleneckGridLayout->addWidget(bottleneckControls.bottleneckRemovePushButton, 6, 0, 7, 0);
+
     this->bottleneckWidgets.push_back(bottleneckControls);
 
     // Links bottleneck position
@@ -139,6 +169,8 @@ void MainWindow::on_addBottleneckButton_clicked() {
     QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckYSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckYSizeConversionToSpinBox(int)));
     QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckYSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckYSizeConversionToSlider(double)));
     QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckYSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
+    // Links remove bottleneck button
+    QObject::connect((bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).bottleneckRemovePushButton), SIGNAL(clicked()), this, SLOT(removeBottleneckButtonClicked()));
 
     this->ui->GLWidget->addBottleneck(0, 0, 0);
 

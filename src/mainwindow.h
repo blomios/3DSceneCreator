@@ -58,6 +58,7 @@ public slots:
 
 private slots:
     void on_addBottleneckButton_clicked();
+    void removeBottleneckButtonClicked();
 
 private:
     Ui::MainWindow *ui;
@@ -102,6 +103,9 @@ private:
         QSlider *tempBottleneckYSizeSlider;
         // Bottleneck Y size label
         QLabel *tempBottleneckYSizeLabel;
+
+        // Remove bottleneck button
+        QPushButton *bottleneckRemovePushButton;
     };
     // Vector containing the bottlenecks control widgets
     std::vector<BottleneckControls> bottleneckWidgets;
