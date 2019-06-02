@@ -73,6 +73,8 @@ public:
     ~MainWidget() override;
     GeometryEngine *getGeometries() const;
     void updateBottlenecks(int index, double position, double xSize, double ySize);
+    void addBottleneck(double position, double xSize, double ySize);
+
 public slots:
     void setNbOfStages(int stages);
     void setNbOfVerticesPerStage(int nbOfVerticesPerStage);

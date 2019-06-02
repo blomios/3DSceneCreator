@@ -232,3 +232,7 @@ void MainWidget::updateBottlenecks(int index, double position, double xSize, dou
         this->geometries->updateBottleNeck(index, position, xSize, ySize);
     }
 }
+
+void MainWidget::addBottleneck(double position, double xSize, double ySize) {
+    this->geometries->addBottleNeck(position, xSize, ySize);
+}
