@@ -107,6 +107,8 @@ private:
     // Object parameters
     int nbOfStages;
     int nbOfVerticesPerStage;
+
+    unsigned int texture;
 };
 
 #endif // MAINWIDGET_H

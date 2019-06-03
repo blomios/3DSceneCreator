@@ -142,9 +142,19 @@ void MainWidget::initializeGL()
     timer.start(12, this);
 }
 
-//! [3]
-void MainWidget::initShaders()
-{
+void MainWidget::initShaders() {
+    // TODO Test texture loading
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    QPixmap *data = new QPixmap(":/texture.png");
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data->width(), data->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
         close();
@@ -199,7 +209,10 @@ void MainWidget::paintGL()
 
     // Set modelview-projection matrix
     program.setUniformValue("mvp", projection * matrix);
-//! [6]
+
+    // Sets the texture
+    glBindTexture(GL_TEXTURE_2D, texture);
+    program.setUniformValue("testTexture", 0);
 
     // Draw cube geometry
     geometries->drawGeometry(&program);
