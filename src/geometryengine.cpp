@@ -118,7 +118,7 @@ void GeometryEngine::placePointsOriginalPosition(){
             //Add the created vertice in the tab
             VertexData vertex = {QVector3D(
                                  x, //X position
-                                 (2.5f / (figure.nbStages+1)) * i - 2.5f/2, //Y position
+                                 cos((PI / (figure.nbStages)) * i), //Y position
                                  z), //Z position
                                  color};
 
