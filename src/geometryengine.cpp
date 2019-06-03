@@ -182,27 +182,28 @@ void GeometryEngine::setBuffers(){
 void GeometryEngine::removeBottleNeck(int bnIndex, bool deleteBnFromTheList){
 
     float yPos = bottleNecks[bnIndex].yPos;
-    float xSize = bottleNecks[bnIndex].xSize;
+    float xSize = 1-
+            bottleNecks[bnIndex].xSize;
     float ySize = bottleNecks[bnIndex].ySize;
 
     int initialIndex = getStagesFromYPosition(yPos);
 
     int index = 0;
 
-    float coeff = 1/xSize;
+    float coeff = xSize;
 
     while(initialIndex+index < vertices.size() && initialIndex - index >=0 && abs(vertices[initialIndex + index].position.y() - yPos) < ySize){
 
-        float coeffSec = coeff *  cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
+        float coeffSec = 1 - coeff *  cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
 
-        if(coeffSec >= 1){
-            vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() * (coeffSec ) );
-            vertices[initialIndex - index].position.setZ( vertices[initialIndex - index].position.z() * (coeffSec ) );
+        qDebug() << cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
 
-            vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() * (coeffSec ) );
-            vertices[initialIndex - index].position.setX( vertices[initialIndex - index].position.x() * (coeffSec ) );
-        }
 
+            vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() / (coeffSec ) );
+            vertices[initialIndex - index].position.setZ( vertices[initialIndex - index].position.z() / (coeffSec ) );
+
+            vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() / (coeffSec ) );
+            vertices[initialIndex - index].position.setX( vertices[initialIndex - index].position.x() / (coeffSec ) );
 
 
         index++;
@@ -245,24 +246,26 @@ void GeometryEngine::addBottleNeck(float yPos, float xSize, float ySize){
 
 void GeometryEngine::setBottleNeck(float yPos, float xSize, float ySize){
 
+    xSize = 1-xSize;
+
     int initialIndex = getStagesFromYPosition(yPos);
 
     int index = 0;
 
-    float coeff = 1/xSize;
+    float coeff = xSize;
 
     while(initialIndex+index < vertices.size() && initialIndex - index >=0 && abs(vertices[initialIndex + index].position.y() - yPos) < ySize){
 
-        float coeffSec = coeff *  cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
+        float coeffSec = 1 - coeff *  cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
 
-        if(coeffSec >= 1){
-            vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() / (coeffSec ) );
-            vertices[initialIndex - index].position.setZ( vertices[initialIndex - index].position.z() / (coeffSec ) );
+        qDebug() << cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
 
-            vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() / (coeffSec ) );
-            vertices[initialIndex - index].position.setX( vertices[initialIndex - index].position.x() / (coeffSec ) );
-        }
 
+            vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() * (coeffSec ) );
+            vertices[initialIndex - index].position.setZ( vertices[initialIndex - index].position.z() * (coeffSec ) );
+
+            vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() * (coeffSec ) );
+            vertices[initialIndex - index].position.setX( vertices[initialIndex - index].position.x() * (coeffSec ) );
 
 
         index++;
