@@ -101,12 +101,64 @@ GeometryEngine::~GeometryEngine()
 //Place the original point positions
 void GeometryEngine::placePointsOriginalPosition(){
 
+    float P = figure.cylinderSize * 100 / (1+figure.cylinderSize);
+
+    int N = P * figure.nbStages / 100;
+
     //set nb indices and vertices to 0
     nbrIndices = 0;
     nbrVertices = 0;
 
     //Set position of each vertices
-    for(int i = 0; i <= figure.nbStages; i++){
+    for(int i = 0; i <= (figure.nbStages - N) / 2; i++){
+
+        for(int j = 0; j < figure.nbVerticesPerStage; j++){
+
+            float x = cos( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i );
+            float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i ) ;
+
+            QVector3D color = QVector3D(1.0f, abs(x),0.0f); //Set a color with a nice gradient color :p
+
+            //Add the created vertice in the tab
+            VertexData vertex = {QVector3D(
+                                 x, //X position
+                                 cos((PI / (figure.nbStages)) * i), //Y position
+                                 z), //Z position
+                                 color};
+
+            vertices.push_back( vertex);
+
+            //Increase vertices nbr
+            nbrVertices++;
+        }
+    }
+
+    //Set position of each vertices
+    for(int i = (figure.nbStages - N) / 2 + 1; i <= (figure.nbStages - N) / 2 + N; i++){
+
+        for(int j = 0; j < figure.nbVerticesPerStage; j++){
+
+            float x = cos( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * ((figure.nbStages - N) / 2) );
+            float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * ((figure.nbStages - N) / 2) ) ;
+
+            QVector3D color = QVector3D(1.0f, abs(x),0.0f); //Set a color with a nice gradient color :p
+
+            //Add the created vertice in the tab
+            VertexData vertex = {QVector3D(
+                                 x, //X position
+                                 cos((PI / (figure.nbStages)) * ((figure.nbStages - N) / 2)), //Y position
+                                 z), //Z position
+                                 color};
+
+            vertices.push_back( vertex);
+
+            //Increase vertices nbr
+            nbrVertices++;
+        }
+    }
+
+    //Set position of each vertices
+    for(int i = (figure.nbStages - N) / 2 + N + 1; i <= figure.nbStages; i++){
 
         for(int j = 0; j < figure.nbVerticesPerStage; j++){
 

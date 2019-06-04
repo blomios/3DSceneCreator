@@ -65,6 +65,7 @@ public:
     {
         int nbVerticesPerStage;
         int nbStages;
+        float cylinderSize;
     };
 
     struct VertexData

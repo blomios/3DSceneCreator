@@ -134,6 +134,7 @@ void MainWidget::initializeGL()
     GeometryEngine::FigureData figure;
     figure.nbStages = 100;
     figure.nbVerticesPerStage = 100;
+    figure.cylinderSize = 0;
 
     //Create a geometry
     geometries = new GeometryEngine(figure);
