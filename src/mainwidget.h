@@ -108,7 +108,8 @@ private:
     int nbOfStages;
     int nbOfVerticesPerStage;
 
-    unsigned int texture;
+    GLuint texture;
+    QImage img;
 };
 
 #endif // MAINWIDGET_H

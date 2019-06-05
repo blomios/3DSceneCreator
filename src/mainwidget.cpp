@@ -70,7 +70,6 @@ MainWidget::~MainWidget()
     doneCurrent();
 }
 
-//! [0]
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
     // Save mouse press position
@@ -95,9 +94,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
     // Increase angular speed
     angularSpeed += acc;
 }
-//! [0]
 
-//! [1]
 void MainWidget::timerEvent(QTimerEvent *)
 {
     // Decrease angular speed (friction)
@@ -114,7 +111,6 @@ void MainWidget::timerEvent(QTimerEvent *)
         update();
     }
 }
-//! [1]
 
 void MainWidget::initializeGL()
 {
@@ -123,37 +119,40 @@ void MainWidget::initializeGL()
     glClearColor(0, 0, 0, 1);
 
     initShaders();
+    initTextures();
+    glEnable(GL_TEXTURE_2D);
 
-//! [2]
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
 
     // Enable back face culling
-    //glEnable(GL_CULL_FACE);
-//! [2]
+    glEnable(GL_CULL_FACE);
+
     GeometryEngine::FigureData figure;
     figure.nbStages = 100;
     figure.nbVerticesPerStage = 100;
 
-    //Create a geometry
+    // Creates a geometry
     geometries = new GeometryEngine(figure);
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
 }
 
-void MainWidget::initShaders() {
-    // TODO Test texture loading
+void MainWidget::initTextures() {
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    // set the texture wrapping/filtering options (on the currently bound texture object)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // Sets the texture wrapping/filtering options (on the currently bound texture object)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    QPixmap *data = new QPixmap(":/texture.png");
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data->width(), data->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    img.load(":/texture2.png");
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width(), img.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
     glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+void MainWidget::initShaders() {
 
     // Compile vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
@@ -198,8 +197,10 @@ void MainWidget::resizeGL(int w, int h)
 
 void MainWidget::paintGL()
 {
+
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 //! [6]
     // Calculate model view transformation
@@ -216,6 +217,7 @@ void MainWidget::paintGL()
 
     // Draw cube geometry
     geometries->drawGeometry(&program);
+    glDisable(GL_TEXTURE_2D);
 }
 
 void MainWidget::setNbOfStages(int stages) {
