@@ -99,6 +99,8 @@ public:
 
     void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
 
+    void setCylinderSize(int size);
+
 private:
 
     void initGeometry();

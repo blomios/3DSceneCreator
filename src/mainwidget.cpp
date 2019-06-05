@@ -232,3 +232,8 @@ void MainWidget::addBottleneck(double position, double xSize, double ySize) {
 void MainWidget::removeBottleneck(int index) {
     this->geometries->removeBottleNeck(index, true);
 }
+
+void MainWidget::setCylinderSize(int size) {
+    this->cylinderSize = size;
+    this->geometries->setCylinderSize(size);
+}

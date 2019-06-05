@@ -19,6 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), verticesPerStageSpinBox, SLOT(setValue(int)));
     QObject::connect(verticesPerStageSpinBox, SIGNAL(valueChanged(int)), verticesPerStageSlider, SLOT(setValue(int)));
     QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfVerticesPerStage(int)));
+    // Cylinder size
+    QSlider* cylinderSizeSlider = ui->cylinderSizeSlider;
+    QSpinBox* cylinderSizeSpinBox = ui->cylinderSizeSpinBox;
+    QObject::connect(cylinderSizeSlider, SIGNAL(valueChanged(int)), cylinderSizeSpinBox, SLOT(setValue(int)));
+    QObject::connect(cylinderSizeSpinBox, SIGNAL(valueChanged(int)), cylinderSizeSlider, SLOT(setValue(int)));
+    QObject::connect(cylinderSizeSpinBox, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setCylinderSize(int)));
 }
 
 MainWindow::~MainWindow() {

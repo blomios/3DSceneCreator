@@ -441,3 +441,8 @@ void GeometryEngine::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
 
     }
 }
+
+void GeometryEngine::setCylinderSize(int size) {
+    // TODO Complete this function
+    figure.cylinderSize = size;
+}
