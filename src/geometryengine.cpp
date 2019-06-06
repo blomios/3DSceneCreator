@@ -442,7 +442,19 @@ void GeometryEngine::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
     }
 }
 
-void GeometryEngine::setCylinderSize(int size) {
-    // TODO Complete this function
+void GeometryEngine::setCylinderSize(float size){
+
+    vertices.clear();
+    indices.clear();
+    arrayBuf.destroy();
+    indexBuf.destroy();
+
     figure.cylinderSize = size;
+
+    arrayBuf.create();
+    indexBuf.create();
+
+    // Initializes cube geometry and transfers it to VBOs
+    initGeometry();
+
 }

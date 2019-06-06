@@ -99,7 +99,7 @@ public:
 
     void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
 
-    void setCylinderSize(int size);
+    void setCylinderSize(float size);
 
 private:
 
