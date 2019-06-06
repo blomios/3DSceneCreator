@@ -114,7 +114,7 @@ void GeometryEngine::placePointsOriginalPosition(){
             float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i ) ;
 
             QVector3D color = QVector3D(1.0f, abs(x),0.0f); //Set a color with a nice gradient color :p
-            QVector2D texCoords = QVector2D((float)j/(figure.nbVerticesPerStage), (float)i/(figure.nbStages)); // TODO Test purpose
+            QVector2D texCoords = QVector2D((float)j/(figure.nbVerticesPerStage - 1), (float)i/(figure.nbStages)); // TODO Test purpose
 
             //Add the created vertice in the tab
             VertexData vertex = {QVector3D(

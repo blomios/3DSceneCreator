@@ -3,6 +3,5 @@
         <file>vshader.glsl</file>
         <file>fshader.glsl</file>
         <file>texture.png</file>
-        <file>texture2.png</file>
     </qresource>
 </RCC>

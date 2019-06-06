@@ -79,7 +79,7 @@ void MainWidget::initializeGL() {
 }
 
 void MainWidget::initTextures() {
-    this->texture = new QOpenGLTexture(QImage(":/texture2.png"));
+    this->texture = new QOpenGLTexture(QImage(":/texture.png"));
 }
 
 void MainWidget::initShaders() {
