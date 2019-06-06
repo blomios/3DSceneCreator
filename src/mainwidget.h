@@ -2,7 +2,6 @@
 #define MAINWIDGET_H
 
 #include "geometryengine.h"
-#include "src/deprecated/Texture.h"
 
 #include <math.h>
 #include <QMouseEvent>
