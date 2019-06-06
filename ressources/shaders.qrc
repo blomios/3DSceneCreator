@@ -3,5 +3,11 @@
         <file>vshader.glsl</file>
         <file>fshader.glsl</file>
         <file>texture.png</file>
+        <file>skybox/nx.png</file>
+        <file>skybox/ny.png</file>
+        <file>skybox/nz.png</file>
+        <file>skybox/px.png</file>
+        <file>skybox/py.png</file>
+        <file>skybox/pz.png</file>
     </qresource>
 </RCC>

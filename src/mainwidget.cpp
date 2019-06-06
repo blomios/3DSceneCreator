@@ -125,11 +125,14 @@ void MainWidget::paintGL() {
     // Set modelview-projection matrix
     program.setUniformValue("mvp", projection * matrix);
 
+    // Draws the skybox
+    geometries->drawSkybox(&program);
+
     // Sets the texture
     this->texture->bind(0);
     program.setUniformValue("testTexture", 0);
 
-    // Draw cube geometry
+    // Draws the model
     geometries->drawGeometry(&program);
 }
 
