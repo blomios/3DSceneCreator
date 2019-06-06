@@ -166,13 +166,14 @@ void GeometryEngine::placePointsOriginalPosition(){
             float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i ) ;
 
             QVector3D color = QVector3D(1.0f, abs(x),0.0f); //Set a color with a nice gradient color :p
+            QVector2D texCoords = QVector2D((float)j/(figure.nbVerticesPerStage - 1), (float)i/(figure.nbStages)); // TODO Test purpose
 
             //Add the created vertice in the tab
             VertexData vertex = {QVector3D(
                                  x, //X position
                                  cos((PI / (figure.nbStages)) * i), //Y position
                                  z), //Z position
-                                 color};
+                    color, texCoords};
 
             vertices.push_back( vertex);
 
@@ -381,6 +382,14 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
     int colorLocation = program->attributeLocation("color");
     program->enableAttributeArray(colorLocation);
     program->setAttributeBuffer(colorLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
+
+    // Offset for texture coordinates
+    offset += sizeof(QVector3D);
+
+    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
+    int textureLocation = program->attributeLocation("texCoord");
+    program->enableAttributeArray(textureLocation);
+    program->setAttributeBuffer(textureLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
 
     // Draw cube geometry using indices from VBO 1
 

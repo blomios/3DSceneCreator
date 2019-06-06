@@ -72,6 +72,7 @@ public:
     {
         QVector3D position;
         QVector3D color;
+        QVector2D texPosition;
     };
 
     struct BottleNeck

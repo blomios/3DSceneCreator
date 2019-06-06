@@ -176,3 +176,10 @@ void MainWindow::on_addBottleneckButton_clicked() {
 
     this->ui->scrollLayout->addWidget(bottleneckControls.tempBottleneckGroupBox);
 }
+
+void MainWindow::on_textureButton_clicked() {
+    QString textureFileName = QFileDialog::getOpenFileName(this,
+        tr("Open Texture"), "",
+        tr("PNG Texture (*.png)"));
+    this->ui->GLWidget->setTexture(textureFileName);
+}

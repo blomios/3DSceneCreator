@@ -1,68 +1,12 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the QtCore module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** BSD License Usage
-** Alternatively, you may use this file under the terms of the BSD license
-** as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
-
 #include "mainwidget.h"
 
-#include <QMouseEvent>
-
-#include <math.h>
-
 MainWidget::MainWidget(QWidget *parent) :
-    QOpenGLWidget(parent),
-    geometries(0),
-    angularSpeed(0)
-{
+        QOpenGLWidget(parent),
+        geometries(0),
+        angularSpeed(0) {
 }
 
-MainWidget::~MainWidget()
-{
+MainWidget::~MainWidget() {
     // Make sure the context is current when deleting the texture
     // and the buffers.
     makeCurrent();
@@ -70,15 +14,12 @@ MainWidget::~MainWidget()
     doneCurrent();
 }
 
-//! [0]
-void MainWidget::mousePressEvent(QMouseEvent *e)
-{
+void MainWidget::mousePressEvent(QMouseEvent *e) {
     // Save mouse press position
     mousePressPosition = QVector2D(e->localPos());
 }
 
-void MainWidget::mouseReleaseEvent(QMouseEvent *e)
-{
+void MainWidget::mouseReleaseEvent(QMouseEvent *e) {
     // Mouse release position - mouse press position
     QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
 
@@ -95,11 +36,8 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
     // Increase angular speed
     angularSpeed += acc;
 }
-//! [0]
 
-//! [1]
-void MainWidget::timerEvent(QTimerEvent *)
-{
+void MainWidget::timerEvent(QTimerEvent *) {
     // Decrease angular speed (friction)
     angularSpeed *= 0.99;
 
@@ -114,85 +52,71 @@ void MainWidget::timerEvent(QTimerEvent *)
         update();
     }
 }
-//! [1]
 
-void MainWidget::initializeGL()
-{
+void MainWidget::initializeGL() {
+    // Initializes OpenGL function resolution for the current context
     initializeOpenGLFunctions();
-
+    // Sets the clearing color to black
     glClearColor(0, 0, 0, 1);
-
+    // Loads and initializes the shaders
     initShaders();
-
-//! [2]
+    // Initializes the textures
+    initTextures();
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
-
     // Enable back face culling
-    //glEnable(GL_CULL_FACE);
-//! [2]
+    glEnable(GL_CULL_FACE);
+    // Initializes a model
     GeometryEngine::FigureData figure;
     figure.nbStages = 100;
     figure.nbVerticesPerStage = 100;
     figure.cylinderSize = 0;
 
-    //Create a geometry
+    // Creates the geometry engine managing the model
     geometries = new GeometryEngine(figure);
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
 }
 
-//! [3]
-void MainWidget::initShaders()
-{
-    // Compile vertex shader
+void MainWidget::initTextures() {
+    this->texture = new QOpenGLTexture(QImage(":/texture.png"));
+}
+
+void MainWidget::initShaders() {
+    // Compiles the vertex shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
         close();
-
-    // Compile fragment shader
+    // Compiles the fragment shader
     if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl"))
         close();
-
-    // Link shader pipeline
+    // Links shader pipeline
     if (!program.link())
         close();
-
-    // Bind shader pipeline for use
+    // Binds shader pipeline for use
     if (!program.bind())
         close();
 }
 
-GeometryEngine *MainWidget::getGeometries() const
-{
+GeometryEngine *MainWidget::getGeometries() const {
     return geometries;
 }
-//! [3]
 
-
-//! [5]
-void MainWidget::resizeGL(int w, int h)
-{
-    // Calculate aspect ratio
+void MainWidget::resizeGL(int w, int h) {
+    // Computes the aspect ratio
     qreal aspect = qreal(w) / qreal(h ? h : 1);
-
-    // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
+    // Sets near plane to 3.0, far plane to 7.0, field of view 45 degrees
     const qreal zNear = 3.0, zFar = 7.0, fov = 45.0;
-
-    // Reset projection
+    // Resets projection
     projection.setToIdentity();
-
-    // Set perspective projection
+    // Sets perspective projection
     projection.perspective(fov, aspect, zNear, zFar);
 }
-//! [5]
 
-void MainWidget::paintGL()
-{
-    // Clear color and depth buffer
+void MainWidget::paintGL() {
+    // Clears color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//! [6]
     // Calculate model view transformation
     QMatrix4x4 matrix;
     matrix.translate(0.0, 0.0, -5.0);
@@ -200,7 +124,10 @@ void MainWidget::paintGL()
 
     // Set modelview-projection matrix
     program.setUniformValue("mvp", projection * matrix);
-//! [6]
+
+    // Sets the texture
+    this->texture->bind(0);
+    program.setUniformValue("testTexture", 0);
 
     // Draw cube geometry
     geometries->drawGeometry(&program);
@@ -228,4 +155,9 @@ void MainWidget::addBottleneck(double position, double xSize, double ySize) {
 
 void MainWidget::removeBottleneck(int index) {
     this->geometries->removeBottleNeck(index, true);
+}
+
+void MainWidget::setTexture(QString path) {
+    delete texture;
+    texture = new QOpenGLTexture(QImage(path));
 }

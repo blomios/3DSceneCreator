@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
 #include <string>
 
 #include "mainwidget.h"
@@ -59,6 +60,7 @@ public slots:
 private slots:
     void on_addBottleneckButton_clicked();
     void removeBottleneckButtonClicked();
+    void on_textureButton_clicked();
 
 private:
     Ui::MainWindow *ui;
