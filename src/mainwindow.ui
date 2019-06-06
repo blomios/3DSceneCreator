@@ -50,8 +50,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>235</width>
-          <height>508</height>
+          <width>239</width>
+          <height>516</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="scrollLayout">
@@ -209,7 +209,7 @@
      <x>0</x>
      <y>0</y>
      <width>1018</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

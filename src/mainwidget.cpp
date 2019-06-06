@@ -140,7 +140,11 @@ void MainWidget::initializeGL()
     geometries = new GeometryEngine(figure);
 
     //Add a bottle neck
-    geometries->addBottleNeck( 0, 0.2,0.2);
+    geometries->addBottleNeck( 0, 0.8,0.2);
+
+    geometries->updateBottleNeck(0, 0.4, 0.2 , 0.8);
+
+    geometries->removeBottleNeck(0,true);
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);

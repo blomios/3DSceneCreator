@@ -178,7 +178,7 @@ void MainWindow::on_addBottleneckButton_clicked() {
     // Links remove bottleneck button
     QObject::connect((bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).bottleneckRemovePushButton), SIGNAL(clicked()), this, SLOT(removeBottleneckButtonClicked()));
 
-    this->ui->GLWidget->addBottleneck(0, 0, 0);
+    this->ui->GLWidget->addBottleneck(0, 0.2, 0.2);
 
     this->ui->scrollLayout->addWidget(bottleneckControls.tempBottleneckGroupBox);
 }

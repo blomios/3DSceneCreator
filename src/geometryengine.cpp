@@ -234,8 +234,7 @@ void GeometryEngine::setBuffers(){
 void GeometryEngine::removeBottleNeck(int bnIndex, bool deleteBnFromTheList){
 
     float yPos = bottleNecks[bnIndex].yPos;
-    float xSize = 1-
-            bottleNecks[bnIndex].xSize;
+    float xSize = bottleNecks[bnIndex].xSize;
     float ySize = bottleNecks[bnIndex].ySize;
 
     int initialIndex = getStagesFromYPosition(yPos);
@@ -300,7 +299,7 @@ void GeometryEngine::addBottleNeck(float yPos, float xSize, float ySize){
 
 void GeometryEngine::setBottleNeck(float yPos, float xSize, float ySize){
 
-    xSize = 1-xSize;
+    xSize = xSize;
 
     int initialIndex = getStagesFromYPosition(yPos);
 
@@ -345,7 +344,7 @@ int GeometryEngine::getStagesFromYPosition(float yPos){
 
     for(int i = figure.nbVerticesPerStage; i < nbrVertices; i+= figure.nbVerticesPerStage){
 
-        qDebug() << vertices[i].position.y();
+       // qDebug() << vertices[i].position.y();
 
         if(abs(vertices[i].position.y() - yPos) > abs(vertices[lastIndex].position.y() - yPos)){
 
@@ -449,7 +448,7 @@ void GeometryEngine::setCylinderSize(float size){
     arrayBuf.destroy();
     indexBuf.destroy();
 
-    figure.cylinderSize = size;
+    figure.cylinderSize = size/10;
 
     arrayBuf.create();
     indexBuf.create();
