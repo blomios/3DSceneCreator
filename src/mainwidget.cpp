@@ -148,7 +148,7 @@ void MainWidget::resizeGL(int w, int h) {
     // Computes the aspect ratio
     qreal aspect = qreal(w) / qreal(h ? h : 1);
     // Sets near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 3.0, zFar = 15.0, fov = 45.0;
+    const qreal zNear = 0.1f, zFar = 100.0, fov = 45.0;
     // Resets projection
     projection.setToIdentity();
     // Sets perspective projection
@@ -160,12 +160,19 @@ void MainWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Computes the model view transformation matrix for the skybox
-    QMatrix4x4 skyboxMatrix;
-    skyboxMatrix.translate(0.0, 0.0, -5.0);
-    skyboxMatrix.rotate(rotation);
+    QMatrix4x4 skyboxModelMatrix;
+    skyboxModelMatrix.setToIdentity();
+    skyboxModelMatrix.scale(5);
+    QMatrix4x4 skyboxViewMatrix;
+    skyboxViewMatrix.setToIdentity();
+    skyboxViewMatrix.translate(0.0, 0.0, -5.0);
+    QMatrix4x4 skyboxProjectionMatrix;
+    skyboxProjectionMatrix = this->projection;
     // Sets the modelview-projection matrix in the model shader program
     skyboxShaderProgram.bind();
-    skyboxShaderProgram.setUniformValue("mvp", projection * skyboxMatrix);
+    skyboxShaderProgram.setUniformValue("model", skyboxModelMatrix);
+    skyboxShaderProgram.setUniformValue("view", skyboxViewMatrix);
+    skyboxShaderProgram.setUniformValue("projection", skyboxProjectionMatrix);
     // Sets the texture in the model shader program
     this->skyboxTexture->bind(0);
     skyboxShaderProgram.setUniformValue("skyboxTexture", 0);
