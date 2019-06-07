@@ -67,7 +67,11 @@ protected:
 
 private:
     QBasicTimer timer;
-    QOpenGLShaderProgram program;
+
+    // Model shader program
+    QOpenGLShaderProgram modelShaderProgram;
+    // Skybox shader program
+    QOpenGLShaderProgram skyboxShaderProgram;
     GeometryEngine *geometries;
 
     QMatrix4x4 projection;
@@ -78,6 +82,7 @@ private:
     QQuaternion rotation;
 
     QOpenGLTexture* texture;
+    QOpenGLTexture *skyboxTexture;
 
     // Object parameters
     int nbOfStages;

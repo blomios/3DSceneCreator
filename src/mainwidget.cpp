@@ -81,20 +81,62 @@ void MainWidget::initializeGL() {
 
 void MainWidget::initTextures() {
     this->texture = new QOpenGLTexture(QImage(":/texture.png"));
+
+        // Faces list
+        QOpenGLTexture::CubeMapFace cubeMapTarget[6] = {
+                QOpenGLTexture::CubeMapNegativeX,
+                QOpenGLTexture::CubeMapPositiveX,
+                QOpenGLTexture::CubeMapNegativeY,
+                QOpenGLTexture::CubeMapPositiveY,
+                QOpenGLTexture::CubeMapNegativeZ,
+                QOpenGLTexture::CubeMapPositiveZ
+        };
+
+        // Loads textures
+        QImage* skyboxImages[6];
+        skyboxImages[0] = new QImage(":/skybox/nx.png");
+        skyboxImages[1] = new QImage(":/skybox/px.png");
+        skyboxImages[2] = new QImage(":/skybox/ny.png");
+        skyboxImages[3] = new QImage(":/skybox/py.png");
+        skyboxImages[4] = new QImage(":/skybox/nz.png");
+        skyboxImages[5] = new QImage(":/skybox/pz.png");
+
+        skyboxTexture = new QOpenGLTexture(QOpenGLTexture::TargetCubeMap);
+        skyboxTexture->create();
+        skyboxTexture->bind();
+        skyboxTexture->setSize(skyboxImages[0]->width(), skyboxImages[0]->height(), skyboxImages[0]->depth());
+        skyboxTexture->setFormat(QOpenGLTexture::RGBA8_UNorm);
+        skyboxTexture->allocateStorage();
+        skyboxTexture->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
+        for (int i = 0; i < 6; i++) {
+            uchar* bits = skyboxImages[i]->bits();
+            skyboxTexture->setData(0, 0, cubeMapTarget[i], QOpenGLTexture::RGBA, QOpenGLTexture::UInt8, bits, 0);
+        }
+        skyboxTexture->release();
+
 }
 
 void MainWidget::initShaders() {
+    // Model shaders
     // Compiles the vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
+    if (!modelShaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
         close();
     // Compiles the fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl"))
+    if (!modelShaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl"))
         close();
     // Links shader pipeline
-    if (!program.link())
+    if (!modelShaderProgram.link())
         close();
-    // Binds shader pipeline for use
-    if (!program.bind())
+
+    // Skybox shaders
+    // Compiles the vertex shader
+    if (!skyboxShaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/skybox/vshaderSkybox.glsl"))
+        close();
+    // Compiles the fragment shader
+    if (!skyboxShaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/skybox/fshaderSkybox.glsl"))
+        close();
+    // Links shader pipeline
+    if (!skyboxShaderProgram.link())
         close();
 }
 
@@ -106,7 +148,7 @@ void MainWidget::resizeGL(int w, int h) {
     // Computes the aspect ratio
     qreal aspect = qreal(w) / qreal(h ? h : 1);
     // Sets near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 3.0, zFar = 7.0, fov = 45.0;
+    const qreal zNear = 3.0, zFar = 15.0, fov = 45.0;
     // Resets projection
     projection.setToIdentity();
     // Sets perspective projection
@@ -117,23 +159,41 @@ void MainWidget::paintGL() {
     // Clears color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Calculate model view transformation
-    QMatrix4x4 matrix;
-    matrix.translate(0.0, 0.0, -5.0);
-    matrix.rotate(rotation);
+    // Computes the model view transformation matrix for the skybox
+    QMatrix4x4 skyboxMatrix;
+    skyboxMatrix.translate(0.0, 0.0, -5.0);
+    skyboxMatrix.rotate(rotation);
+    // Sets the modelview-projection matrix in the model shader program
+    skyboxShaderProgram.bind();
+    skyboxShaderProgram.setUniformValue("mvp", projection * skyboxMatrix);
+    // Sets the texture in the model shader program
+    this->skyboxTexture->bind(0);
+    skyboxShaderProgram.setUniformValue("skyboxTexture", 0);
+    skyboxShaderProgram.release();
 
-    // Set modelview-projection matrix
-    program.setUniformValue("mvp", projection * matrix);
+
+    // Computes the model view transformation matrix for the model
+    QMatrix4x4 modelMatrix;
+    modelMatrix.translate(0.0, 0.0, -5.0);
+    modelMatrix.rotate(rotation);
+    // Sets the modelview-projection matrix in the model shader program
+    modelShaderProgram.bind();
+    modelShaderProgram.setUniformValue("mvp", projection * modelMatrix);
+    this->texture->bind(0);
+    modelShaderProgram.setUniformValue("testTexture", 0);
+    modelShaderProgram.release();
 
     // Draws the skybox
-    geometries->drawSkybox(&program);
-
-    // Sets the texture
-    this->texture->bind(0);
-    program.setUniformValue("testTexture", 0);
+    skyboxShaderProgram.bind();
+    glDepthMask(GL_FALSE);
+    geometries->drawSkybox(&skyboxShaderProgram);
+    glDepthMask(GL_TRUE);
+    skyboxShaderProgram.release();
 
     // Draws the model
-    geometries->drawGeometry(&program);
+    modelShaderProgram.bind();
+    geometries->drawGeometry(&modelShaderProgram);
+    modelShaderProgram.release();
 }
 
 void MainWidget::setNbOfStages(int stages) {

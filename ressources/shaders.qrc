@@ -2,6 +2,8 @@
     <qresource prefix="/">
         <file>vshader.glsl</file>
         <file>fshader.glsl</file>
+        <file>skybox/vshaderSkybox.glsl</file>
+        <file>skybox/fshaderSkybox.glsl</file>
         <file>texture.png</file>
         <file>skybox/nx.png</file>
         <file>skybox/ny.png</file>

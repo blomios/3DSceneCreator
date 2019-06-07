@@ -25,13 +25,6 @@ public:
         QVector3D color;
         QVector2D texPosition;
     };
-
-    struct SkyboxVertexData {
-        QVector3D position;
-        QVector3D color;
-        QVector3D texPosition;
-    };
-
     struct BottleNeck
     {
         float yPos;
@@ -58,11 +51,12 @@ public:
     void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
 
     // Initializes the skybox textures
-    void initializeSkybox();
+    //void initializeSkybox();
 
     // Draws the skybox
     void drawSkybox(QOpenGLShaderProgram *program);
 
+    void bindTextureSkybox();
 private:
 
     void initGeometry();
@@ -89,10 +83,6 @@ private:
     int nbrIndices = 0;
 
     // Skybox
-    GLuint skyboxTextureId;
-    std::vector<SkyboxVertexData> skyboxVertices;
-    std::vector<GLushort> skyboxIndices;
     QOpenGLBuffer skyboxVerticesBuffer;
-    QOpenGLBuffer skyboxIndicesBuffer;
 };
 #endif // GEOMETRYENGINE_H
