@@ -93,23 +93,23 @@ void MainWidget::initTextures() {
         };
 
         // Loads textures
-        QImage* skyboxImages[6];
-        skyboxImages[0] = new QImage(":/skybox/nx.png");
-        skyboxImages[1] = new QImage(":/skybox/px.png");
-        skyboxImages[2] = new QImage(":/skybox/ny.png");
-        skyboxImages[3] = new QImage(":/skybox/py.png");
-        skyboxImages[4] = new QImage(":/skybox/nz.png");
-        skyboxImages[5] = new QImage(":/skybox/pz.png");
+        QImage skyboxImages[6];
+        skyboxImages[0] = QImage(":/skybox/nx.png").convertToFormat(QImage::Format_RGBA8888);
+        skyboxImages[1] = QImage(":/skybox/px.png").convertToFormat(QImage::Format_RGBA8888);
+        skyboxImages[2] = QImage(":/skybox/ny.png").convertToFormat(QImage::Format_RGBA8888);
+        skyboxImages[3] = QImage(":/skybox/py.png").convertToFormat(QImage::Format_RGBA8888);
+        skyboxImages[4] = QImage(":/skybox/nz.png").convertToFormat(QImage::Format_RGBA8888);
+        skyboxImages[5] = QImage(":/skybox/pz.png").convertToFormat(QImage::Format_RGBA8888);
 
         skyboxTexture = new QOpenGLTexture(QOpenGLTexture::TargetCubeMap);
         skyboxTexture->create();
         skyboxTexture->bind();
-        skyboxTexture->setSize(skyboxImages[0]->width(), skyboxImages[0]->height(), skyboxImages[0]->depth());
-        skyboxTexture->setFormat(QOpenGLTexture::RGBA8_UNorm);
+        skyboxTexture->setSize(skyboxImages[0].width(), skyboxImages[0].height(), skyboxImages[0].depth());
+        skyboxTexture->setFormat(QOpenGLTexture::RGBAFormat);
         skyboxTexture->allocateStorage();
-        skyboxTexture->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
+        skyboxTexture->setMinMagFilters(QOpenGLTexture::Nearest, QOpenGLTexture::Nearest);
         for (int i = 0; i < 6; i++) {
-            uchar* bits = skyboxImages[i]->bits();
+            uchar* bits = skyboxImages[i].bits();
             skyboxTexture->setData(0, 0, cubeMapTarget[i], QOpenGLTexture::RGBA, QOpenGLTexture::UInt8, bits, 0);
         }
         skyboxTexture->release();
