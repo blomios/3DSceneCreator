@@ -54,12 +54,9 @@
 #include <QVector3D>
 #include <math.h>
 
-
-
 #define PI 3.14159265
 
 
-//! [0]
 GeometryEngine::GeometryEngine()
     : indexBuf(QOpenGLBuffer::IndexBuffer)
 {
@@ -72,8 +69,14 @@ GeometryEngine::GeometryEngine()
     arrayBuf.create();
     indexBuf.create();
 
+    // Creates VBO for the skybox
+    skyboxVerticesBuffer.create();
+
     // Initializes cube geometry and transfers it to VBOs
     initGeometry();
+
+    // Initializes the skybox
+    //initializeSkybox();
 }
 
 GeometryEngine::GeometryEngine(FigureData data)
@@ -87,6 +90,10 @@ GeometryEngine::GeometryEngine(FigureData data)
     arrayBuf.create();
     indexBuf.create();
 
+    // Creates VBO for the skybox
+    skyboxVerticesBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    skyboxVerticesBuffer.create();
+
     // Initializes cube geometry and transfers it to VBOs
     initGeometry();
 }
@@ -96,7 +103,6 @@ GeometryEngine::~GeometryEngine()
     arrayBuf.destroy();
     indexBuf.destroy();
 }
-//! [0]
 
 //Place the original point positions
 void GeometryEngine::placePointsOriginalPosition(){
@@ -357,8 +363,7 @@ void GeometryEngine::initGeometry() {
 }
 
 //Draw the geometry
-void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program)
-{
+void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
     placePointsOriginalPosition();
     // Tell OpenGL which VBOs to use
 
@@ -439,4 +444,73 @@ void GeometryEngine::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
         setBottleNeck(bottleNecks[i].yPos, bottleNecks[i].xSize, bottleNecks[i].ySize);
 
     }
+}
+
+void GeometryEngine::drawSkybox(QOpenGLShaderProgram *program) {
+    std::vector<float> skyboxVertices = {
+            // positions
+            -1.0f,  1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+
+            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+
+            -1.0f, -1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+            -1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f, -1.0f,
+
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f
+    };
+
+    // VBO (Vertex Buffer Object)
+    auto *skyboxVertexDataArr = new float[skyboxVertices.size()];
+    copy(skyboxVertices.begin(), skyboxVertices.end(), skyboxVertexDataArr);
+    skyboxVerticesBuffer.bind();
+    skyboxVerticesBuffer.allocate(skyboxVertexDataArr, skyboxVertices.size() * sizeof(float));
+    skyboxVerticesBuffer.release();
+    delete[] skyboxVertexDataArr;
+
+    skyboxVerticesBuffer.bind();
+
+    // Offset for position
+    quintptr offset = 0;
+
+    // Tell OpenGL programmable pipeline how to locate vertex position data
+    int vertexLocation = program->attributeLocation("position");
+    program->enableAttributeArray(vertexLocation);
+    program->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, 3 * sizeof(float));
+
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    skyboxVerticesBuffer.release();
 }
