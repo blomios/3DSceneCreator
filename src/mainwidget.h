@@ -95,6 +95,7 @@ private:
     // Camera related
     QVector2D mousePressPosition;
     QQuaternion rotation;
+    QQuaternion skyboxRotation;
     QVector3D rotationAxis;
     qreal angularSpeed;
     QVector3D cameraPosition;

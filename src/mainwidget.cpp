@@ -47,6 +47,9 @@ void MainWidget::timerEvent(QTimerEvent *) {
     } else {
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
+        if (freeCamera) {
+            skyboxRotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * skyboxRotation;
+        }
     }
     // Request an update
     update();
@@ -175,7 +178,7 @@ void MainWidget::paintGL() {
     QMatrix4x4 skyboxViewMatrix;
     skyboxViewMatrix.setToIdentity();
     skyboxViewMatrix.lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->cameraUp);
-    skyboxViewMatrix.rotate(rotation);
+    skyboxViewMatrix.rotate(skyboxRotation);
 
     // Projection matrix for the skybox
     QMatrix4x4 skyboxProjectionMatrix;
@@ -196,10 +199,12 @@ void MainWidget::paintGL() {
     QMatrix4x4 modelMatrix;
     modelMatrix.translate(0.0f, 0.0f, -5.0f);
     modelMatrix.rotate(rotation);
+
     // View matrix of the model
     QMatrix4x4 modelViewMatrix;
     modelViewMatrix.setToIdentity();
     modelViewMatrix.lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->cameraUp);
+
     // Projection of the model
 
     // Sets the matrices in the model shader program
@@ -254,15 +259,17 @@ void MainWidget::setTexture(QString path) {
 }
 
 void MainWidget::keyPressEvent(QKeyEvent *e) {
-    float cameraSpeed = 0.05;
-    if (e->key() == Qt::Key_Z) {
-        this->cameraPosition += cameraSpeed * this->cameraFront;
-    } else if (e->key() == Qt::Key_S) {
-        this->cameraPosition -= cameraSpeed * this->cameraFront;
-    } else if (e->key() == Qt::Key_D) {
-        this->cameraPosition += QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
-    } else if (e->key() == Qt::Key_Q) {
-        this->cameraPosition -= QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
+    if (freeCamera) {
+        float cameraSpeed = 0.05;
+        if (e->key() == Qt::Key_Z) {
+            this->cameraPosition += cameraSpeed * this->cameraFront;
+        } else if (e->key() == Qt::Key_S) {
+            this->cameraPosition -= cameraSpeed * this->cameraFront;
+        } else if (e->key() == Qt::Key_D) {
+            this->cameraPosition += QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
+        } else if (e->key() == Qt::Key_Q) {
+            this->cameraPosition -= QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
+        }
     }
 }
 
