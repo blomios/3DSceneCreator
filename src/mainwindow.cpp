@@ -183,3 +183,7 @@ void MainWindow::on_textureButton_clicked() {
         tr("PNG Texture (*.png)"));
     this->ui->GLWidget->setTexture(textureFileName);
 }
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    this->ui->GLWidget->keyPressEvent(event);
+}

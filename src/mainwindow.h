@@ -57,6 +57,8 @@ public slots:
      */
     void updateBottlenecks(double value);
 
+    void keyPressEvent(QKeyEvent *event);
+
 private slots:
     void on_addBottleneckButton_clicked();
     void removeBottleneckButtonClicked();
