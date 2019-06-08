@@ -153,6 +153,32 @@
           </layout>
          </item>
          <item>
+          <widget class="QGroupBox" name="gridGroupBox">
+           <property name="title">
+            <string>Camera</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="0">
+             <widget class="QRadioButton" name="freeCamRadioButton">
+              <property name="text">
+               <string>Free camera</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QRadioButton" name="fixedCamRadioButton">
+              <property name="text">
+               <string>Fixed camera</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="addBottleneckButton">
            <property name="text">
             <string>Add a bottleneck</string>
@@ -192,7 +218,7 @@
      <x>0</x>
      <y>0</y>
      <width>1018</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
