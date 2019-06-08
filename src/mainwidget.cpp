@@ -82,8 +82,7 @@ void MainWidget::initializeGL() {
     this->cameraUp = QVector3D(0.0f, 1.0f, 0.0f);
     this->cameraFront = QVector3D(0.0f, 0.0f, -1.0f);
 
-    yaw = 0;
-    pitch = 0;
+    freeCamera = false;
 }
 
 void MainWidget::initTextures() {
@@ -265,4 +264,8 @@ void MainWidget::keyPressEvent(QKeyEvent *e) {
     } else if (e->key() == Qt::Key_Q) {
         this->cameraPosition -= QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
     }
+}
+
+void MainWidget::setFreeCam(bool freeCam) {
+    this->freeCamera = freeCam;
 }

@@ -19,6 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), verticesPerStageSpinBox, SLOT(setValue(int)));
     QObject::connect(verticesPerStageSpinBox, SIGNAL(valueChanged(int)), verticesPerStageSlider, SLOT(setValue(int)));
     QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfVerticesPerStage(int)));
+
+    // Camera radio butons
+    QRadioButton* freeCamRadioButton = ui->freeCamRadioButton;
+    QRadioButton* fixedCamRadioButton = ui->fixedCamRadioButton;
+    QObject::connect(freeCamRadioButton, SIGNAL(toggled(bool)), this, SLOT(cameraButtonManagement()));
+    QObject::connect(fixedCamRadioButton, SIGNAL(toggled(bool)), this, SLOT(cameraButtonManagement()));
 }
 
 MainWindow::~MainWindow() {
@@ -186,4 +192,14 @@ void MainWindow::on_textureButton_clicked() {
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     this->ui->GLWidget->keyPressEvent(event);
+}
+
+void MainWindow::cameraButtonManagement() {
+    if (sender() == this->ui->freeCamRadioButton) {
+        this->ui->fixedCamRadioButton->setChecked(false);
+        this->ui->GLWidget->setFreeCam(true);
+    } else if (sender() == this->ui->fixedCamRadioButton) {
+        this->ui->freeCamRadioButton->setChecked(false);
+        this->ui->GLWidget->setFreeCam(false);
+    }
 }

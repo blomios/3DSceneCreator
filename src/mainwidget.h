@@ -47,6 +47,8 @@ public:
      */
     void keyPressEvent(QKeyEvent *e) override;
 
+    void setFreeCam(bool freeCam);
+
 public slots:
     // Sets the number of stages of the model
     void setNbOfStages(int stages);
@@ -98,8 +100,7 @@ private:
     QVector3D cameraPosition;
     QVector3D cameraFront;
     QVector3D cameraUp;
-    float yaw;
-    float pitch;
+    bool freeCamera;
 
     // Textures
     QOpenGLTexture* modelTexture;
