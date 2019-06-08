@@ -57,6 +57,8 @@ public:
     void drawSkybox(QOpenGLShaderProgram *program);
 
     void bindTextureSkybox();
+    void setCylinderSize(float size);
+
 private:
 
     void initGeometry();

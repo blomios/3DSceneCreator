@@ -70,10 +70,17 @@ void MainWidget::initializeGL() {
     GeometryEngine::FigureData figure;
     figure.nbStages = 100;
     figure.nbVerticesPerStage = 100;
-    figure.cylinderSize = 0;
+    figure.cylinderSize = 1;
 
     // Creates the geometry engine managing the model
     geometries = new GeometryEngine(figure);
+
+    //Add a bottle neck
+    geometries->addBottleNeck( 0, 0.8,0.2);
+
+    geometries->updateBottleNeck(0, 0.4, 0.2 , 0.8);
+
+    geometries->removeBottleNeck(0,true);
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
@@ -225,6 +232,11 @@ void MainWidget::addBottleneck(double position, double xSize, double ySize) {
 
 void MainWidget::removeBottleneck(int index) {
     this->geometries->removeBottleNeck(index, true);
+}
+
+void MainWidget::setCylinderSize(int size) {
+    this->cylinderSize = size;
+    this->geometries->setCylinderSize(size);
 }
 
 void MainWidget::setTexture(QString path) {

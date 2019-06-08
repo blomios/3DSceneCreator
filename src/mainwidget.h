@@ -47,6 +47,7 @@ public slots:
 
     // Sets the number of vertices per stages of the model
     void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
+    void setCylinderSize(int size);
 
 protected:
     void mousePressEvent(QMouseEvent *e) override;
@@ -87,6 +88,7 @@ private:
     // Object parameters
     int nbOfStages;
     int nbOfVerticesPerStage;
+    int cylinderSize;
 };
 
 #endif // MAINWIDGET_H
