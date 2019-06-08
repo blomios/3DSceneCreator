@@ -39,7 +39,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e) {
 
 void MainWidget::timerEvent(QTimerEvent *) {
     // Decrease angular speed (friction)
-    angularSpeed *= 0.99;
+    angularSpeed *= 0.70;
 
     // Stop rotation when speed goes below threshold
     if (angularSpeed < 0.01) {
@@ -47,10 +47,9 @@ void MainWidget::timerEvent(QTimerEvent *) {
     } else {
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
-
-        // Request an update
-        update();
     }
+    // Request an update
+    update();
 }
 
 void MainWidget::initializeGL() {
@@ -77,10 +76,18 @@ void MainWidget::initializeGL() {
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
+
+    // Initializes camera vectors
+    this->cameraPosition = QVector3D(0.0f, 0.0f, 0.0f);
+    this->cameraUp = QVector3D(0.0f, 1.0f, 0.0f);
+    this->cameraFront = QVector3D(0.0f, 0.0f, -1.0f);
+
+    yaw = 0;
+    pitch = 0;
 }
 
 void MainWidget::initTextures() {
-    this->texture = new QOpenGLTexture(QImage(":/texture.png"));
+    this->modelTexture = new QOpenGLTexture(QImage(":/texture.png"));
 
         // Faces list
         QOpenGLTexture::CubeMapFace cubeMapTarget[6] = {
@@ -150,25 +157,32 @@ void MainWidget::resizeGL(int w, int h) {
     // Sets near plane to 3.0, far plane to 7.0, field of view 45 degrees
     const qreal zNear = 0.1f, zFar = 100.0, fov = 45.0;
     // Resets projection
-    projection.setToIdentity();
+    modelProjectionMatrix.setToIdentity();
     // Sets perspective projection
-    projection.perspective(fov, aspect, zNear, zFar);
+    modelProjectionMatrix.perspective(fov, aspect, zNear, zFar);
 }
 
 void MainWidget::paintGL() {
     // Clears color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Computes the model view transformation matrix for the skybox
+    // Model matrix for the skybox
     QMatrix4x4 skyboxModelMatrix;
     skyboxModelMatrix.setToIdentity();
-    skyboxModelMatrix.scale(5);
+    skyboxModelMatrix.translate(0.0f, 0.0f, -5.0f);
+    skyboxModelMatrix.scale(10);
+
+    // View matrix for the skybox
     QMatrix4x4 skyboxViewMatrix;
     skyboxViewMatrix.setToIdentity();
-    skyboxViewMatrix.translate(0.0, 0.0, -5.0);
+    skyboxViewMatrix.lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->cameraUp);
+    skyboxViewMatrix.rotate(rotation);
+
+    // Projection matrix for the skybox
     QMatrix4x4 skyboxProjectionMatrix;
-    skyboxProjectionMatrix = this->projection;
-    // Sets the modelview-projection matrix in the model shader program
+    skyboxProjectionMatrix = this->modelProjectionMatrix;
+
+    // Sets the matrices in the shader program
     skyboxShaderProgram.bind();
     skyboxShaderProgram.setUniformValue("model", skyboxModelMatrix);
     skyboxShaderProgram.setUniformValue("view", skyboxViewMatrix);
@@ -179,15 +193,23 @@ void MainWidget::paintGL() {
     skyboxShaderProgram.release();
 
 
-    // Computes the model view transformation matrix for the model
+    // Model matrix of the model
     QMatrix4x4 modelMatrix;
-    modelMatrix.translate(0.0, 0.0, -5.0);
+    modelMatrix.translate(0.0f, 0.0f, -5.0f);
     modelMatrix.rotate(rotation);
-    // Sets the modelview-projection matrix in the model shader program
+    // View matrix of the model
+    QMatrix4x4 modelViewMatrix;
+    modelViewMatrix.setToIdentity();
+    modelViewMatrix.lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->cameraUp);
+    // Projection of the model
+
+    // Sets the matrices in the model shader program
     modelShaderProgram.bind();
-    modelShaderProgram.setUniformValue("mvp", projection * modelMatrix);
-    this->texture->bind(0);
-    modelShaderProgram.setUniformValue("testTexture", 0);
+    skyboxShaderProgram.setUniformValue("model", modelMatrix);
+    skyboxShaderProgram.setUniformValue("view", modelViewMatrix);
+    skyboxShaderProgram.setUniformValue("projection", modelProjectionMatrix);
+    this->modelTexture->bind(0);
+    modelShaderProgram.setUniformValue("modelTexture", 0);
     modelShaderProgram.release();
 
     // Draws the skybox
@@ -228,6 +250,19 @@ void MainWidget::removeBottleneck(int index) {
 }
 
 void MainWidget::setTexture(QString path) {
-    delete texture;
-    texture = new QOpenGLTexture(QImage(path));
+    delete modelTexture;
+    modelTexture = new QOpenGLTexture(QImage(path));
+}
+
+void MainWidget::keyPressEvent(QKeyEvent *e) {
+    float cameraSpeed = 0.05;
+    if (e->key() == Qt::Key_Z) {
+        this->cameraPosition += cameraSpeed * this->cameraFront;
+    } else if (e->key() == Qt::Key_S) {
+        this->cameraPosition -= cameraSpeed * this->cameraFront;
+    } else if (e->key() == Qt::Key_D) {
+        this->cameraPosition += QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
+    } else if (e->key() == Qt::Key_Q) {
+        this->cameraPosition -= QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
+    }
 }
