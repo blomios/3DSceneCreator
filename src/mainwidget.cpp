@@ -39,7 +39,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e) {
 
 void MainWidget::timerEvent(QTimerEvent *) {
     // Decrease angular speed (friction)
-    angularSpeed *= 0.70;
+    angularSpeed *= 0.90;
 
     // Stop rotation when speed goes below threshold
     if (angularSpeed < 0.01) {
@@ -170,7 +170,7 @@ void MainWidget::paintGL() {
     QMatrix4x4 skyboxModelMatrix;
     skyboxModelMatrix.setToIdentity();
     skyboxModelMatrix.translate(0.0f, 0.0f, -5.0f);
-    skyboxModelMatrix.scale(10);
+    skyboxModelMatrix.scale(30);
 
     // View matrix for the skybox
     QMatrix4x4 skyboxViewMatrix;
