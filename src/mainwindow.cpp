@@ -193,7 +193,9 @@ void MainWindow::on_textureButton_clicked() {
     QString textureFileName = QFileDialog::getOpenFileName(this,
         tr("Open Texture"), "",
         tr("PNG Texture (*.png)"));
-    this->ui->GLWidget->setTexture(textureFileName);
+    if (!textureFileName.isEmpty()) {
+        this->ui->GLWidget->setTexture(textureFileName);
+    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {

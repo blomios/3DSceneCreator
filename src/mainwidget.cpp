@@ -266,8 +266,11 @@ void MainWidget::setCylinderSize(int size) {
 }
 
 void MainWidget::setTexture(QString path) {
-    delete modelTexture;
-    modelTexture = new QOpenGLTexture(QImage(path));
+    QImage image = QImage(path);
+    if (!image.isNull()) {
+        delete modelTexture;
+        modelTexture = new QOpenGLTexture(image);
+    }
 }
 
 void MainWidget::keyPressEvent(QKeyEvent *e) {
