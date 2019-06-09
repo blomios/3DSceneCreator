@@ -13,7 +13,7 @@ out vec2 fTexCoord;
 
 void main() {
     // Calculate vertex position in screen space
-    gl_Position = projection * view * model * vec4(position, 1.0 );
+    gl_Position = projection * view * model * vec4(position, 1.0);
     fColor = color;
     fTexCoord = texCoord;
 }

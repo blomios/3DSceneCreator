@@ -209,9 +209,9 @@ void MainWidget::paintGL() {
 
     // Sets the matrices in the model shader program
     modelShaderProgram.bind();
-    skyboxShaderProgram.setUniformValue("model", modelMatrix);
-    skyboxShaderProgram.setUniformValue("view", modelViewMatrix);
-    skyboxShaderProgram.setUniformValue("projection", modelProjectionMatrix);
+    modelShaderProgram.setUniformValue("model", modelMatrix);
+    modelShaderProgram.setUniformValue("view", modelViewMatrix);
+    modelShaderProgram.setUniformValue("projection", modelProjectionMatrix);
     this->modelTexture->bind(0);
     modelShaderProgram.setUniformValue("modelTexture", 0);
     modelShaderProgram.release();
