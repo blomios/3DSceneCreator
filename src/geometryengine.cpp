@@ -244,9 +244,9 @@ void GeometryEngine::removeBottleNeck(int bnIndex, bool deleteBnFromTheList){
     float xSize = bottleNecks[bnIndex].xSize;
     float ySize = bottleNecks[bnIndex].ySize;
 
-    int initialIndex = getStagesFromYPosition(yPos);
+    int initialIndex = getStagesFromYPosition(yPos) - figure.nbVerticesPerStage/2;
 
-    int index = 0;
+    int index=0;
 
     float coeff = xSize;
 
@@ -255,13 +255,19 @@ void GeometryEngine::removeBottleNeck(int bnIndex, bool deleteBnFromTheList){
         float coeffSec = 1 - coeff *  cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
 
         //qDebug() << cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
+        if(index == 0){
+            vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() / (coeffSec ) );
+            vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() / (coeffSec ) );
 
-
+        }
+        else{
             vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() / (coeffSec ) );
             vertices[initialIndex - index].position.setZ( vertices[initialIndex - index].position.z() / (coeffSec ) );
 
             vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() / (coeffSec ) );
             vertices[initialIndex - index].position.setX( vertices[initialIndex - index].position.x() / (coeffSec ) );
+        }
+
 
 
         index++;
@@ -306,12 +312,10 @@ void GeometryEngine::addBottleNeck(float yPos, float xSize, float ySize){
 
 void GeometryEngine::setBottleNeck(float yPos, float xSize, float ySize){
 
-    xSize = xSize;
-
-    int initialIndex = getStagesFromYPosition(yPos);
+    int initialIndex = getStagesFromYPosition(yPos) - figure.nbVerticesPerStage/2;
 
 
-    int index = 0;
+    int index=0;
 
     float coeff = xSize;
 
@@ -322,13 +326,17 @@ void GeometryEngine::setBottleNeck(float yPos, float xSize, float ySize){
 
         //qDebug() << cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
 
-
+        if(index == 0){
+            vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() * (coeffSec ) );
+            vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() * (coeffSec ) );
+        }
+        else{
             vertices[initialIndex + index].position.setZ( vertices[initialIndex + index].position.z() * (coeffSec ) );
             vertices[initialIndex - index].position.setZ( vertices[initialIndex - index].position.z() * (coeffSec ) );
 
             vertices[initialIndex + index].position.setX( vertices[initialIndex + index].position.x() * (coeffSec ) );
             vertices[initialIndex - index].position.setX( vertices[initialIndex - index].position.x() * (coeffSec ) );
-
+        }
 
         index++;
 
