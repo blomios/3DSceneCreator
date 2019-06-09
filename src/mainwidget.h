@@ -49,6 +49,8 @@ public:
 
     void setFreeCam(bool freeCam);
 
+    void resetCamera();
+
 public slots:
     // Sets the number of stages of the model
     void setNbOfStages(int stages);

@@ -66,6 +66,7 @@ private slots:
     void on_addBottleneckButton_clicked();
     void removeBottleneckButtonClicked();
     void on_textureButton_clicked();
+    void on_resetCameraButton_clicked();
 
 private:
     Ui::MainWindow *ui;

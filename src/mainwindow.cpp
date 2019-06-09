@@ -203,3 +203,7 @@ void MainWindow::cameraButtonManagement() {
         this->ui->GLWidget->setFreeCam(false);
     }
 }
+
+void MainWindow::on_resetCameraButton_clicked() {
+    this->ui->GLWidget->resetCamera();
+}

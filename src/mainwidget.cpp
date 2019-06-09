@@ -276,3 +276,10 @@ void MainWidget::keyPressEvent(QKeyEvent *e) {
 void MainWidget::setFreeCam(bool freeCam) {
     this->freeCamera = freeCam;
 }
+
+void MainWidget::resetCamera() {
+    this->cameraPosition = QVector3D();
+    this->cameraFront = QVector3D();
+    this->cameraUp = QVector3D();
+    this->skyboxRotation = QQuaternion();
+}
