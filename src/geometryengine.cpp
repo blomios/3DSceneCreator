@@ -37,24 +37,25 @@ void GeometryEngine::placePointsOriginalPosition(){
     nbrIndices = 0;
     nbrVertices = 0;
 
+    int beginStage = 0;
+    int maxStage = (figure.nbStages - N) / 2;
     //Set position of each vertices
-    for(int i = 0; i <= (figure.nbStages - N) / 2; i++){
+    for (int i = beginStage; i <= maxStage; i++) {
 
-        for(int j = 0; j < figure.nbVerticesPerStage; j++){
+        for (int j = 0; j < figure.nbVerticesPerStage; j++) {
 
-            float x = cos( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i );
-            float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i ) ;
+            float x = cos(((2 * PI) / figure.nbVerticesPerStage) * j) * sin((PI / (figure.nbStages)) * i);
+            float y = cos((PI / (figure.nbStages)) * i);
+            float z = sin(((2 * PI) / figure.nbVerticesPerStage) * j) * sin((PI / (figure.nbStages)) * i);
 
-            QVector3D color = QVector3D(1.0f, abs(x),0.0f); //Set a color with a nice gradient color :p
+            QVector3D color = QVector3D(1.0f, abs(x), 0.0f); //Set a color with a nice gradient color :p
+            QVector2D texCoords = QVector2D((float) j / figure.nbVerticesPerStage,
+                                            (float) i / maxStage); // TODO Test purpose
 
             //Add the created vertice in the tab
-            VertexData vertex = {QVector3D(
-                                 x, //X position
-                                 cos((PI / (figure.nbStages)) * i), //Y position
-                                 z), //Z position
-                                 color};
+            VertexData vertex = {QVector3D(x, y, z), color, texCoords};
 
-            vertices.push_back( vertex);
+            vertices.push_back(vertex);
 
             //Increase vertices nbr
             nbrVertices++;
@@ -62,23 +63,26 @@ void GeometryEngine::placePointsOriginalPosition(){
     }
 
     //Set position of each vertices
-    for(int i = (figure.nbStages - N) / 2 + 1; i <= (figure.nbStages - N) / 2 + N; i++){
+    beginStage = (figure.nbStages - N) / 2 + 1;
+    maxStage = (figure.nbStages - N) / 2 + N;
+    for (int i = beginStage; i <= maxStage; i++) {
 
-        for(int j = 0; j < figure.nbVerticesPerStage; j++){
+        for (int j = 0; j < figure.nbVerticesPerStage; j++) {
 
-            float x = cos( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * ((figure.nbStages - N) / 2) );
-            float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * ((figure.nbStages - N) / 2) ) ;
+            float x = cos(((2 * PI) / figure.nbVerticesPerStage) * j) *
+                      sin((PI / (figure.nbStages)) * ((figure.nbStages - N) / 2));
+            float y = cos((PI / (figure.nbStages)) * i);
+            float z = sin(((2 * PI) / figure.nbVerticesPerStage) * j) *
+                      sin((PI / (figure.nbStages)) * ((figure.nbStages - N) / 2));
 
-            QVector3D color = QVector3D(1.0f, abs(x),0.0f); //Set a color with a nice gradient color :p
+            QVector3D color = QVector3D(1.0f, abs(x), 0.0f); //Set a color with a nice gradient color :p
+            QVector2D texCoords = QVector2D((float) j / figure.nbVerticesPerStage,
+                                            (float) i / maxStage); // TODO Test purpose
 
             //Add the created vertice in the tab
-            VertexData vertex = {QVector3D(
-                                 x, //X position
-                                 cos((PI / (figure.nbStages)) * i), //Y position
-                                 z), //Z position
-                                 color};
+            VertexData vertex = {QVector3D(x, y, z), color, texCoords};
 
-            vertices.push_back( vertex);
+            vertices.push_back(vertex);
 
             //Increase vertices nbr
             nbrVertices++;
@@ -86,24 +90,24 @@ void GeometryEngine::placePointsOriginalPosition(){
     }
 
     //Set position of each vertices
-    for(int i = (figure.nbStages - N) / 2 + N + 1; i <= figure.nbStages; i++){
+    beginStage = (figure.nbStages - N) / 2 + N + 1;
+    maxStage = figure.nbStages;
+    for (int i = beginStage; i <= maxStage; i++) {
 
-        for(int j = 0; j < figure.nbVerticesPerStage; j++){
+        for (int j = 0; j < figure.nbVerticesPerStage; j++) {
 
-            float x = cos( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i );
-            float z = sin( ((2*PI) / figure.nbVerticesPerStage) * j ) * sin( (PI / (figure.nbStages)) * i ) ;
+            float x = cos(((2 * PI) / figure.nbVerticesPerStage) * j) * sin((PI / (figure.nbStages)) * i);
+            float y = cos((PI / (figure.nbStages)) * i);
+            float z = sin(((2 * PI) / figure.nbVerticesPerStage) * j) * sin((PI / (figure.nbStages)) * i);
 
-            QVector3D color = QVector3D(1.0f, abs(x),0.0f); //Set a color with a nice gradient color :p
-            QVector2D texCoords = QVector2D((float)j/(figure.nbVerticesPerStage - 1), (float)i/(figure.nbStages)); // TODO Test purpose
+            QVector3D color = QVector3D(1.0f, abs(x), 0.0f); //Set a color with a nice gradient color :p
+            QVector2D texCoords = QVector2D((float) j / figure.nbVerticesPerStage,
+                                            (float) i / maxStage);
 
             //Add the created vertice in the tab
-            VertexData vertex = {QVector3D(
-                                 x, //X position
-                                 cos((PI / (figure.nbStages)) * i), //Y position
-                                 z), //Z position
-                    color, texCoords};
+            VertexData vertex = {QVector3D(x, y, z), color, texCoords};
 
-            vertices.push_back( vertex);
+            vertices.push_back(vertex);
 
             //Increase vertices nbr
             nbrVertices++;
