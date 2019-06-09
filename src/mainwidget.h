@@ -41,6 +41,16 @@ public:
     // Sets the texture of the model
     void setTexture(QString path);
 
+    /**
+     * Manages actions when a key is pressed
+     * @param e the key event
+     */
+    void keyPressEvent(QKeyEvent *e) override;
+
+    void setFreeCam(bool freeCam);
+
+    void resetCamera();
+
 public slots:
     // Sets the number of stages of the model
     void setNbOfStages(int stages);
@@ -50,8 +60,16 @@ public slots:
     void setCylinderSize(int size);
 
 protected:
+    /**
+     * Manages actions when a mouse button is pressed
+     * @param e the mouse event
+     */
     void mousePressEvent(QMouseEvent *e) override;
 
+    /**
+     * Manages actions when a mouse button is release
+     * @param e the mouse event
+     */
     void mouseReleaseEvent(QMouseEvent *e) override;
 
     void timerEvent(QTimerEvent *e) override;
@@ -75,14 +93,21 @@ private:
     QOpenGLShaderProgram skyboxShaderProgram;
     GeometryEngine *geometries;
 
-    QMatrix4x4 projection;
+    QMatrix4x4 modelProjectionMatrix;
 
+    // Camera related
     QVector2D mousePressPosition;
+    QQuaternion rotation;
+    QQuaternion skyboxRotation;
     QVector3D rotationAxis;
     qreal angularSpeed;
-    QQuaternion rotation;
+    QVector3D cameraPosition;
+    QVector3D cameraFront;
+    QVector3D cameraUp;
+    bool freeCamera;
 
-    QOpenGLTexture* texture;
+    // Textures
+    QOpenGLTexture* modelTexture;
     QOpenGLTexture *skyboxTexture;
 
     // Object parameters

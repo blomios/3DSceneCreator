@@ -25,6 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(cylinderSizeSlider, SIGNAL(valueChanged(int)), cylinderSizeSpinBox, SLOT(setValue(int)));
     QObject::connect(cylinderSizeSpinBox, SIGNAL(valueChanged(int)), cylinderSizeSlider, SLOT(setValue(int)));
     QObject::connect(cylinderSizeSpinBox, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setCylinderSize(int)));
+
+    // Camera radio butons
+    QRadioButton* freeCamRadioButton = ui->freeCamRadioButton;
+    QRadioButton* fixedCamRadioButton = ui->fixedCamRadioButton;
+    QObject::connect(freeCamRadioButton, SIGNAL(toggled(bool)), this, SLOT(cameraButtonManagement()));
+    QObject::connect(fixedCamRadioButton, SIGNAL(toggled(bool)), this, SLOT(cameraButtonManagement()));
 }
 
 MainWindow::~MainWindow() {
@@ -188,4 +194,22 @@ void MainWindow::on_textureButton_clicked() {
         tr("Open Texture"), "",
         tr("PNG Texture (*.png)"));
     this->ui->GLWidget->setTexture(textureFileName);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    this->ui->GLWidget->keyPressEvent(event);
+}
+
+void MainWindow::cameraButtonManagement() {
+    if (sender() == this->ui->freeCamRadioButton) {
+        this->ui->fixedCamRadioButton->setChecked(false);
+        this->ui->GLWidget->setFreeCam(true);
+    } else if (sender() == this->ui->fixedCamRadioButton) {
+        this->ui->freeCamRadioButton->setChecked(false);
+        this->ui->GLWidget->setFreeCam(false);
+    }
+}
+
+void MainWindow::on_resetCameraButton_clicked() {
+    this->ui->GLWidget->resetCamera();
 }

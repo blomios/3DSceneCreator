@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <string>
+#include <QtWidgets/QRadioButton>
 
 #include "mainwidget.h"
 #include "ui_mainwindow.h"
@@ -57,10 +58,15 @@ public slots:
      */
     void updateBottlenecks(double value);
 
+    void keyPressEvent(QKeyEvent *event);
+
+    void cameraButtonManagement();
+
 private slots:
     void on_addBottleneckButton_clicked();
     void removeBottleneckButtonClicked();
     void on_textureButton_clicked();
+    void on_resetCameraButton_clicked();
 
 private:
     Ui::MainWindow *ui;
