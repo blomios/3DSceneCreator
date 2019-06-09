@@ -6,6 +6,9 @@
 #include <QOpenGLTexture>
 #include <QOpenGLBuffer>
 #include <QSlider>
+#include <QVector2D>
+#include <QVector3D>
+#include <math.h>
 
 #define PI 3.14159265
 
@@ -31,9 +34,9 @@ public:
         float xSize;
         float ySize;
     };
+    
+    explicit GeometryEngine(FigureData data);
 
-    GeometryEngine();
-    GeometryEngine(FigureData data);
     virtual ~GeometryEngine();
 
     void drawGeometry(QOpenGLShaderProgram *program);
@@ -50,13 +53,9 @@ public:
 
     void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
 
-    // Initializes the skybox textures
-    //void initializeSkybox();
-
     // Draws the skybox
     void drawSkybox(QOpenGLShaderProgram *program);
 
-    void bindTextureSkybox();
     void setCylinderSize(float size);
 
 private:
@@ -71,7 +70,7 @@ private:
 
     void setBuffers();
 
-    FigureData figure;
+    FigureData figure{};
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
 
