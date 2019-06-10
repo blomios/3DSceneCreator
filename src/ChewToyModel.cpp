@@ -90,7 +90,7 @@ void ChewToyModel::placeVertices() {
                                             (float) i / maxStage);
 
             //Add the created vertice in the tab
-            VertexData vertex = {QVector3D(x, y, z), color, texCoords};
+            ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
 
             vertices.push_back(vertex);
         }
@@ -114,7 +114,7 @@ void ChewToyModel::placeVertices() {
                                             (float) i / maxStage);
 
             //Add the created vertice in the tab
-            VertexData vertex = {QVector3D(x, y, z), color, texCoords};
+            ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
 
             vertices.push_back(vertex);
         }
@@ -136,7 +136,7 @@ void ChewToyModel::placeVertices() {
                                             (float) i / maxStage);
 
             //Add the created vertice in the tab
-            VertexData vertex = {QVector3D(x, y, z), color, texCoords};
+            ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
 
             vertices.push_back(vertex);
         }
@@ -171,10 +171,10 @@ void ChewToyModel::placeVertices() {
 void ChewToyModel::setBuffers() {
 
     // Sets the VBO
-    auto *arr = new VertexData[vertices.size()];
+    auto *arr = new ModelVertex[vertices.size()];
     copy(vertices.begin(), vertices.end(), arr);
     modelVerticesBuffer->bind();
-    modelVerticesBuffer->allocate(arr, vertices.size() * sizeof(VertexData));
+    modelVerticesBuffer->allocate(arr, vertices.size() * sizeof(ModelVertex));
     modelVerticesBuffer->release();
     delete[] arr;
 
@@ -201,21 +201,21 @@ void ChewToyModel::removeBottleNeck(int bnIndex, bool deleteBnFromTheList) {
     float coeff = xSize;
 
     while (initialIndex + index < vertices.size() && initialIndex - index >= 0 &&
-           abs(vertices[initialIndex + index].position.y() - yPos) < ySize) {
+           abs(vertices[initialIndex + index].getPosition().y() - yPos) < ySize) {
 
-        float coeffSec = 1 - coeff * cos((PI / 2 / ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
+        float coeffSec = 1 - coeff * cos((PI / 2 / ySize) * abs(vertices[initialIndex + index].getPosition().y() - yPos));
 
         //qDebug() << cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
         if (index == 0) {
-            vertices[initialIndex + index].position.setZ(vertices[initialIndex + index].position.z() / (coeffSec));
-            vertices[initialIndex + index].position.setX(vertices[initialIndex + index].position.x() / (coeffSec));
+            vertices[initialIndex + index].setZPos(vertices[initialIndex + index].getPosition().z() / (coeffSec));
+            vertices[initialIndex + index].setXPos(vertices[initialIndex + index].getPosition().x() / (coeffSec));
 
         } else {
-            vertices[initialIndex + index].position.setZ(vertices[initialIndex + index].position.z() / (coeffSec));
-            vertices[initialIndex - index].position.setZ(vertices[initialIndex - index].position.z() / (coeffSec));
+            vertices[initialIndex + index].setZPos(vertices[initialIndex + index].getPosition().z() / (coeffSec));
+            vertices[initialIndex - index].setZPos(vertices[initialIndex - index].getPosition().z() / (coeffSec));
 
-            vertices[initialIndex + index].position.setX(vertices[initialIndex + index].position.x() / (coeffSec));
-            vertices[initialIndex - index].position.setX(vertices[initialIndex - index].position.x() / (coeffSec));
+            vertices[initialIndex + index].setXPos(vertices[initialIndex + index].getPosition().x() / (coeffSec));
+            vertices[initialIndex - index].setXPos(vertices[initialIndex - index].getPosition().x() / (coeffSec));
         }
 
 
@@ -267,22 +267,22 @@ void ChewToyModel::setBottleNeck(float yPos, float xSize, float ySize) {
     float coeff = xSize;
 
     while (initialIndex + index < vertices.size() && initialIndex - index >= 0 &&
-           abs(vertices[initialIndex + index].position.y() - yPos) < ySize) {
+           abs(vertices[initialIndex + index].getPosition().y() - yPos) < ySize) {
 
 
-        float coeffSec = 1 - coeff * cos((PI / 2 / ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
+        float coeffSec = 1 - coeff * cos((PI / 2 / ySize) * abs(vertices[initialIndex + index].getPosition().y() - yPos));
 
         //qDebug() << cos((PI/2/ySize) * abs(vertices[initialIndex + index].position.y() - yPos));
 
         if (index == 0) {
-            vertices[initialIndex + index].position.setZ(vertices[initialIndex + index].position.z() * (coeffSec));
-            vertices[initialIndex + index].position.setX(vertices[initialIndex + index].position.x() * (coeffSec));
+            vertices[initialIndex + index].setZPos(vertices[initialIndex + index].getPosition().z() * (coeffSec));
+            vertices[initialIndex + index].setXPos(vertices[initialIndex + index].getPosition().x() * (coeffSec));
         } else {
-            vertices[initialIndex + index].position.setZ(vertices[initialIndex + index].position.z() * (coeffSec));
-            vertices[initialIndex - index].position.setZ(vertices[initialIndex - index].position.z() * (coeffSec));
+            vertices[initialIndex + index].setZPos(vertices[initialIndex + index].getPosition().z() * (coeffSec));
+            vertices[initialIndex - index].setZPos(vertices[initialIndex - index].getPosition().z() * (coeffSec));
 
-            vertices[initialIndex + index].position.setX(vertices[initialIndex + index].position.x() * (coeffSec));
-            vertices[initialIndex - index].position.setX(vertices[initialIndex - index].position.x() * (coeffSec));
+            vertices[initialIndex + index].setXPos(vertices[initialIndex + index].getPosition().x() * (coeffSec));
+            vertices[initialIndex - index].setXPos(vertices[initialIndex - index].getPosition().x() * (coeffSec));
         }
 
         index++;
@@ -307,7 +307,7 @@ int ChewToyModel::getStagesFromYPosition(float yPos) {
 
         // qDebug() << vertices[i].position.y();
 
-        if (abs(vertices[i].position.y() - yPos) > abs(vertices[lastIndex].position.y() - yPos)) {
+        if (abs(vertices[i].getPosition().y() - yPos) > abs(vertices[lastIndex].getPosition().y() - yPos)) {
 
             return lastIndex;
         } else {

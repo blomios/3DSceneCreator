@@ -25,7 +25,7 @@ set(SOURCE_FILES
         src/MainWindow.cpp
         src/mainwindow.ui
         ressources/shaders.qrc
-        src/Skybox.cpp src/Skybox.h src/ChewToyModel.cpp src/ChewToyModel.h)
+        src/Skybox.cpp src/Skybox.h src/ChewToyModel.cpp src/ChewToyModel.h src/ModelVertex.cpp src/ModelVertex.h)
 
 
 # Create executable from sources

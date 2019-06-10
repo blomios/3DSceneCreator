@@ -6,27 +6,16 @@
 #include <QtGui/QVector2D>
 #include <QtGui/QVector3D>
 #include <cmath>
+#include "ModelVertex.h"
 
 #define PI 3.14159265
 
 class ChewToyModel {
 public:
 
-    struct VertexData {
-        QVector3D position;
-        QVector3D color;
-        QVector2D texPosition;
-    };
-
     ChewToyModel(int nbStage, int nbVertices, float cylinderSize);
 
     ~ChewToyModel();
-
-    int getNbOfStages() const;
-
-    int getNbOfVerticesPerStage() const;
-
-    float getCylinderSize() const;
 
     void setNbOfVerticesPerStage(int nbOfVerticesPerStage);
 
@@ -81,13 +70,11 @@ private:
     // EBO
     QOpenGLBuffer *modelIndicesBuffer;
     // Vertices of the model
-    std::vector<VertexData> vertices;
+    std::vector<ModelVertex> vertices;
     // Indices to build the model
     std::vector<GLushort> indices;
     // Bottlenecks of the model
     std::vector<BottleNeck> bottleNecks;
-
-
 };
 
 

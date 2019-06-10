@@ -24,7 +24,7 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
     // Tell OpenGL programmable pipeline how to locate vertex position data
     int vertexLocation = program->attributeLocation("position");
     program->enableAttributeArray(vertexLocation);
-    program->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(ChewToyModel::VertexData));
+    program->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(ModelVertex));
 
     // Offset for texture coordinate
     offset += sizeof(QVector3D);
@@ -32,7 +32,7 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
     // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
     int colorLocation = program->attributeLocation("color");
     program->enableAttributeArray(colorLocation);
-    program->setAttributeBuffer(colorLocation, GL_FLOAT, offset, 3, sizeof(ChewToyModel::VertexData));
+    program->setAttributeBuffer(colorLocation, GL_FLOAT, offset, 3, sizeof(ModelVertex));
 
     // Offset for texture coordinates
     offset += sizeof(QVector3D);
@@ -40,7 +40,7 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
     // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
     int textureLocation = program->attributeLocation("texCoord");
     program->enableAttributeArray(textureLocation);
-    program->setAttributeBuffer(textureLocation, GL_FLOAT, offset, 3, sizeof(ChewToyModel::VertexData));
+    program->setAttributeBuffer(textureLocation, GL_FLOAT, offset, 3, sizeof(ModelVertex));
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, model->getIndicesNumber(), GL_UNSIGNED_SHORT, 0);
@@ -88,5 +88,3 @@ void GeometryEngine::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
 void GeometryEngine::setCylinderSize(float size) {
     this->model->setCylinderSize(size);
 }
-
-
