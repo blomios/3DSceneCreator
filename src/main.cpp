@@ -1,22 +1,19 @@
-#include <QApplication>
-#include <QLabel>
-#include <QSurfaceFormat>
-
 #ifndef QT_NO_OPENGL
-#include "mainwindow.h"
+
+#include "MainWindow.h"
+
 #endif
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    app.setAttribute( Qt::AA_UseDesktopOpenGL );
+    QApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
+    QApplication::setApplicationName("Chew Toy Creator");
+    QApplication::setApplicationVersion("1.0");
+    QApplication::setWindowIcon(QIcon(":/icon.png"));
 
     QSurfaceFormat format;
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);
-
-    app.setApplicationName("3DSceneCreator");
-    app.setApplicationVersion("1.0");
 #ifndef QT_NO_OPENGL
     MainWindow window;
     window.show();
@@ -24,5 +21,5 @@ int main(int argc, char *argv[])
     QLabel note("OpenGL Support required");
     note.show();
 #endif
-    return app.exec();
+    return QApplication::exec();
 }

@@ -20,13 +20,12 @@ find_package(Qt5Core)
 # Sources files
 set(SOURCE_FILES
         src/main.cpp
-        src/geometry.cpp
-        src/mainwidget.cpp
-        src/geometryengine.cpp
-        src/mainwindow.cpp
+        src/MainWidget.cpp
+        src/GeometryEngine.cpp
+        src/MainWindow.cpp
         src/mainwindow.ui
         ressources/shaders.qrc
-        )
+        src/Skybox.cpp src/Skybox.h src/ChewToyModel.cpp src/ChewToyModel.h src/ModelVertex.cpp src/ModelVertex.h src/Camera.cpp src/Camera.h)
 
 
 # Create executable from sources

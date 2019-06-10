@@ -1,34 +1,34 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+        QMainWindow(parent),
+        ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
     // Connects the spinboxes and the sliders together and connects them to the OpenGL widget
     // Number of stages
-    QSlider* nbOfStagesSlider = ui->nbOfStagesSlider;
-    QSpinBox* nbOfStagesSpinBox = ui->nbOfStagesSpinBox;
-    QObject::connect(nbOfStagesSlider,  SIGNAL(valueChanged(int)), nbOfStagesSpinBox, SLOT(setValue(int)));
-    QObject::connect(nbOfStagesSpinBox,  SIGNAL(valueChanged(int)), nbOfStagesSlider, SLOT(setValue(int)));
+    QSlider *nbOfStagesSlider = ui->nbOfStagesSlider;
+    QSpinBox *nbOfStagesSpinBox = ui->nbOfStagesSpinBox;
+    QObject::connect(nbOfStagesSlider, SIGNAL(valueChanged(int)), nbOfStagesSpinBox, SLOT(setValue(int)));
+    QObject::connect(nbOfStagesSpinBox, SIGNAL(valueChanged(int)), nbOfStagesSlider, SLOT(setValue(int)));
     QObject::connect(nbOfStagesSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfStages(int)));
     // Vertices per stage
-    QSlider* verticesPerStageSlider = ui->verticesPerStageSlider;
-    QSpinBox* verticesPerStageSpinBox = ui->verticesPerStageSpinBox;
+    QSlider *verticesPerStageSlider = ui->verticesPerStageSlider;
+    QSpinBox *verticesPerStageSpinBox = ui->verticesPerStageSpinBox;
     QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), verticesPerStageSpinBox, SLOT(setValue(int)));
     QObject::connect(verticesPerStageSpinBox, SIGNAL(valueChanged(int)), verticesPerStageSlider, SLOT(setValue(int)));
-    QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setNbOfVerticesPerStage(int)));
+    QObject::connect(verticesPerStageSlider, SIGNAL(valueChanged(int)), ui->GLWidget,
+                     SLOT(setNbOfVerticesPerStage(int)));
     // Cylinder size
-    QSlider* cylinderSizeSlider = ui->cylinderSizeSlider;
-    QSpinBox* cylinderSizeSpinBox = ui->cylinderSizeSpinBox;
+    QSlider *cylinderSizeSlider = ui->cylinderSizeSlider;
+    QSpinBox *cylinderSizeSpinBox = ui->cylinderSizeSpinBox;
     QObject::connect(cylinderSizeSlider, SIGNAL(valueChanged(int)), cylinderSizeSpinBox, SLOT(setValue(int)));
     QObject::connect(cylinderSizeSpinBox, SIGNAL(valueChanged(int)), cylinderSizeSlider, SLOT(setValue(int)));
     QObject::connect(cylinderSizeSpinBox, SIGNAL(valueChanged(int)), ui->GLWidget, SLOT(setCylinderSize(int)));
 
     // Camera radio butons
-    QRadioButton* freeCamRadioButton = ui->freeCamRadioButton;
-    QRadioButton* fixedCamRadioButton = ui->fixedCamRadioButton;
+    QRadioButton *freeCamRadioButton = ui->freeCamRadioButton;
+    QRadioButton *fixedCamRadioButton = ui->fixedCamRadioButton;
     QObject::connect(freeCamRadioButton, SIGNAL(toggled(bool)), this, SLOT(cameraButtonManagement()));
     QObject::connect(fixedCamRadioButton, SIGNAL(toggled(bool)), this, SLOT(cameraButtonManagement()));
 }
@@ -88,11 +88,17 @@ void MainWindow::bottleneckYSizeConversionToSlider(double value) {
 void MainWindow::updateBottlenecks(double value) {
     for (BottleneckControls bottleneckControls : this->bottleneckWidgets) {
         if (sender() == bottleneckControls.tempBottleneckPositionSpinBox) {
-            ui->GLWidget->updateBottlenecks(bottleneckControls.bottleNeckIndex, value, bottleneckControls.tempBottleneckXSizeSpinBox->value(), bottleneckControls.tempBottleneckYSizeSpinBox->value());
+            ui->GLWidget->updateBottlenecks(bottleneckControls.bottleNeckIndex, value,
+                                            bottleneckControls.tempBottleneckXSizeSpinBox->value(),
+                                            bottleneckControls.tempBottleneckYSizeSpinBox->value());
         } else if (sender() == bottleneckControls.tempBottleneckXSizeSpinBox) {
-            ui->GLWidget->updateBottlenecks(bottleneckControls.bottleNeckIndex, bottleneckControls.tempBottleneckPositionSpinBox->value(), value, bottleneckControls.tempBottleneckYSizeSpinBox->value());
+            ui->GLWidget->updateBottlenecks(bottleneckControls.bottleNeckIndex,
+                                            bottleneckControls.tempBottleneckPositionSpinBox->value(), value,
+                                            bottleneckControls.tempBottleneckYSizeSpinBox->value());
         } else if (sender() == bottleneckControls.tempBottleneckYSizeSpinBox) {
-            ui->GLWidget->updateBottlenecks(bottleneckControls.bottleNeckIndex, bottleneckControls.tempBottleneckPositionSpinBox->value(), bottleneckControls.tempBottleneckXSizeSpinBox->value(), value);
+            ui->GLWidget->updateBottlenecks(bottleneckControls.bottleNeckIndex,
+                                            bottleneckControls.tempBottleneckPositionSpinBox->value(),
+                                            bottleneckControls.tempBottleneckXSizeSpinBox->value(), value);
         }
     }
 }
@@ -104,7 +110,9 @@ void MainWindow::removeBottleneckButtonClicked() {
             // Updates IDs
             for (int i = bottleneckControls.bottleNeckIndex + 1; i < this->bottleneckWidgets.size(); i++) {
                 this->bottleneckWidgets.at(i).bottleNeckIndex--;
-                this->bottleneckWidgets.at(i).tempBottleneckGroupBox->setTitle("Bottleneck #" + QString::number(this->bottleneckWidgets.at(i).bottleNeckIndex + 1) + " parameters");
+                this->bottleneckWidgets.at(i).tempBottleneckGroupBox->setTitle(
+                        "Bottleneck #" + QString::number(this->bottleneckWidgets.at(i).bottleNeckIndex + 1) +
+                        " parameters");
             }
             this->ui->scrollLayout->removeWidget(bottleneckControls.tempBottleneckGroupBox);
             this->bottleneckWidgets.erase(this->bottleneckWidgets.begin() + bottleneckControls.bottleNeckIndex);
@@ -130,7 +138,8 @@ void MainWindow::on_addBottleneckButton_clicked() {
     bottleneckControls.bottleNeckIndex = static_cast<int>(bottleneckWidgets.size());
 
     bottleneckControls.tempBottleneckGroupBox = new QGroupBox();
-    bottleneckControls.tempBottleneckGroupBox->setTitle("Bottleneck #" + QString::number(this->bottleneckWidgets.size() + 1) + " parameters");
+    bottleneckControls.tempBottleneckGroupBox->setTitle(
+            "Bottleneck #" + QString::number(this->bottleneckWidgets.size() + 1) + " parameters");
     bottleneckControls.tempBottleneckGridLayout = new QGridLayout();
     bottleneckControls.tempBottleneckGroupBox->setLayout(bottleneckControls.tempBottleneckGridLayout);
 
@@ -170,19 +179,29 @@ void MainWindow::on_addBottleneckButton_clicked() {
     this->bottleneckWidgets.push_back(bottleneckControls);
 
     // Links bottleneck position
-    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckPositionSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckPositionConversionToSpinBox(int)));
-    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckPositionSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckPositionConversionToSlider(double)));
-    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckPositionSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
+    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckPositionSlider,
+                     SIGNAL(valueChanged(int)), this, SLOT(bottleneckPositionConversionToSpinBox(int)));
+    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckPositionSpinBox,
+                     SIGNAL(valueChanged(double)), this, SLOT(bottleneckPositionConversionToSlider(double)));
+    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckPositionSpinBox,
+                     SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
     // Links bottleneck X-size
-    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckXSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckXSizeConversionToSpinBox(int)));
-    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckXSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckXSizeConversionToSlider(double)));
-    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckXSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
+    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckXSizeSlider,
+                     SIGNAL(valueChanged(int)), this, SLOT(bottleneckXSizeConversionToSpinBox(int)));
+    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckXSizeSpinBox,
+                     SIGNAL(valueChanged(double)), this, SLOT(bottleneckXSizeConversionToSlider(double)));
+    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckXSizeSpinBox,
+                     SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
     // Links bottleneck Y-size
-    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckYSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(bottleneckYSizeConversionToSpinBox(int)));
-    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckYSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(bottleneckYSizeConversionToSlider(double)));
-    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckYSizeSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
+    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckYSizeSlider,
+                     SIGNAL(valueChanged(int)), this, SLOT(bottleneckYSizeConversionToSpinBox(int)));
+    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckYSizeSpinBox,
+                     SIGNAL(valueChanged(double)), this, SLOT(bottleneckYSizeConversionToSlider(double)));
+    QObject::connect(bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).tempBottleneckYSizeSpinBox,
+                     SIGNAL(valueChanged(double)), this, SLOT(updateBottlenecks(double)));
     // Links remove bottleneck button
-    QObject::connect((bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).bottleneckRemovePushButton), SIGNAL(clicked()), this, SLOT(removeBottleneckButtonClicked()));
+    QObject::connect((bottleneckWidgets.at(bottleneckControls.bottleNeckIndex).bottleneckRemovePushButton),
+                     SIGNAL(clicked()), this, SLOT(removeBottleneckButtonClicked()));
 
     this->ui->GLWidget->addBottleneck(0, 0.2, 0.2);
 
@@ -191,27 +210,27 @@ void MainWindow::on_addBottleneckButton_clicked() {
 
 void MainWindow::on_textureButton_clicked() {
     QString textureFileName = QFileDialog::getOpenFileName(this,
-        tr("Open Texture"), "",
-        tr("PNG Texture (*.png)"));
+                                                           tr("Open Texture"), "",
+                                                           tr("PNG Texture (*.png)"));
     if (!textureFileName.isEmpty()) {
         this->ui->GLWidget->setTexture(textureFileName);
     }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    this->ui->GLWidget->keyPressEvent(event);
+    this->ui->GLWidget->getCamera()->keyPressEvent(event);
 }
 
 void MainWindow::cameraButtonManagement() {
     if (sender() == this->ui->freeCamRadioButton) {
         this->ui->fixedCamRadioButton->setChecked(false);
-        this->ui->GLWidget->setFreeCam(true);
+        this->ui->GLWidget->getCamera()->setFreeCam(true);
     } else if (sender() == this->ui->fixedCamRadioButton) {
         this->ui->freeCamRadioButton->setChecked(false);
-        this->ui->GLWidget->setFreeCam(false);
+        this->ui->GLWidget->getCamera()->setFreeCam(false);
     }
 }
 
 void MainWindow::on_resetCameraButton_clicked() {
-    this->ui->GLWidget->resetCamera();
+    this->ui->GLWidget->getCamera()->resetCamera();
 }
