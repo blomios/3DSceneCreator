@@ -21,18 +21,6 @@ ChewToyModel::~ChewToyModel() {
     delete this->modelIndicesBuffer;
 }
 
-int ChewToyModel::getNbOfStages() const {
-    return nbOfStages;
-}
-
-int ChewToyModel::getNbOfVerticesPerStage() const {
-    return nbOfVerticesPerStage;
-}
-
-float ChewToyModel::getCylinderSize() const {
-    return cylinderSize;
-}
-
 void ChewToyModel::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
     vertices.clear();
     indices.clear();
