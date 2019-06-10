@@ -218,19 +218,19 @@ void MainWindow::on_textureButton_clicked() {
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    this->ui->GLWidget->keyPressEvent(event);
+    this->ui->GLWidget->getCamera()->keyPressEvent(event);
 }
 
 void MainWindow::cameraButtonManagement() {
     if (sender() == this->ui->freeCamRadioButton) {
         this->ui->fixedCamRadioButton->setChecked(false);
-        this->ui->GLWidget->setFreeCam(true);
+        this->ui->GLWidget->getCamera()->setFreeCam(true);
     } else if (sender() == this->ui->fixedCamRadioButton) {
         this->ui->freeCamRadioButton->setChecked(false);
-        this->ui->GLWidget->setFreeCam(false);
+        this->ui->GLWidget->getCamera()->setFreeCam(false);
     }
 }
 
 void MainWindow::on_resetCameraButton_clicked() {
-    this->ui->GLWidget->resetCamera();
+    this->ui->GLWidget->getCamera()->resetCamera();
 }

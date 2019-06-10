@@ -12,42 +12,15 @@ MainWidget::~MainWidget() {
 }
 
 void MainWidget::mousePressEvent(QMouseEvent *e) {
-    // Save mouse press position
-    mousePressPosition = QVector2D(e->localPos());
+    this->camera->mousePressEvent(e);
 }
 
 void MainWidget::mouseReleaseEvent(QMouseEvent *e) {
-    // Mouse release position - mouse press position
-    QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
-
-    // Rotation axis is perpendicular to the mouse position difference
-    // vector
-    QVector3D n = QVector3D(diff.y(), diff.x(), 0.0).normalized();
-
-    // Accelerate angular speed relative to the length of the mouse sweep
-    qreal acc = diff.length() / 100.0;
-
-    // Calculate new rotation axis as weighted sum
-    rotationAxis = (rotationAxis * angularSpeed + n * acc).normalized();
-
-    // Increase angular speed
-    angularSpeed += acc;
+    this->camera->mouseReleaseEvent(e);
 }
 
 void MainWidget::timerEvent(QTimerEvent *) {
-    // Decrease angular speed (friction)
-    angularSpeed *= 0.90;
-
-    // Stop rotation when speed goes below threshold
-    if (angularSpeed < 0.01) {
-        angularSpeed = 0.0;
-    } else {
-        // Update rotation
-        rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
-        if (freeCamera) {
-            skyboxRotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * skyboxRotation;
-        }
-    }
+    this->camera->timerEvent(nullptr);
     // Request an update
     update();
 }
@@ -72,14 +45,8 @@ void MainWidget::initializeGL() {
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
 
-    // Initializes camera vectors
-    this->cameraPosition = QVector3D(0.0f, 0.0f, 0.0f);
-    this->cameraUp = QVector3D(0.0f, 1.0f, 0.0f);
-    this->cameraFront = QVector3D(0.0f, 0.0f, -1.0f);
-
-    this->freeCamera = false;
-
-    this->angularSpeed = 0;
+    // Initializes camera
+    this->camera = new Camera();
 }
 
 void MainWidget::initTextures() {
@@ -138,8 +105,8 @@ void MainWidget::paintGL() {
     // View matrix for the skybox
     QMatrix4x4 skyboxViewMatrix;
     skyboxViewMatrix.setToIdentity();
-    skyboxViewMatrix.lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->cameraUp);
-    skyboxViewMatrix.rotate(skyboxRotation);
+    skyboxViewMatrix.lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(), camera->getCameraUp());
+    skyboxViewMatrix.rotate(camera->getSkyboxRotation());
 
     // Projection matrix for the skybox
     QMatrix4x4 skyboxProjectionMatrix;
@@ -158,12 +125,12 @@ void MainWidget::paintGL() {
     // Model matrix of the model
     QMatrix4x4 modelMatrix;
     modelMatrix.translate(0.0f, 0.0f, -5.0f);
-    modelMatrix.rotate(rotation);
+    modelMatrix.rotate(camera->getRotation());
 
     // View matrix of the model
     QMatrix4x4 modelViewMatrix;
     modelViewMatrix.setToIdentity();
-    modelViewMatrix.lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->cameraUp);
+    modelViewMatrix.lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(), camera->getCameraUp());
 
     // Projection of the model
 
@@ -226,30 +193,6 @@ void MainWidget::setTexture(const QString& path) {
     }
 }
 
-void MainWidget::keyPressEvent(QKeyEvent *e) {
-    if (freeCamera) {
-        float cameraSpeed = 0.05;
-        if (e->key() == Qt::Key_Z) {
-            this->cameraPosition += cameraSpeed * this->cameraFront;
-        } else if (e->key() == Qt::Key_S) {
-            this->cameraPosition -= cameraSpeed * this->cameraFront;
-        } else if (e->key() == Qt::Key_D) {
-            this->cameraPosition +=
-                    QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
-        } else if (e->key() == Qt::Key_Q) {
-            this->cameraPosition -=
-                    QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
-        }
-    }
-}
-
-void MainWidget::setFreeCam(bool freeCam) {
-    this->freeCamera = freeCam;
-}
-
-void MainWidget::resetCamera() {
-    this->cameraPosition = QVector3D();
-    this->cameraFront = QVector3D();
-    this->cameraUp = QVector3D();
-    this->skyboxRotation = QQuaternion();
+Camera *MainWidget::getCamera() const {
+    return camera;
 }

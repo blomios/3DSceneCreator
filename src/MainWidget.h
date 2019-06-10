@@ -3,6 +3,7 @@
 
 #include "GeometryEngine.h"
 #include "Skybox.h"
+#include "Camera.h"
 
 #include <math.h>
 #include <QMouseEvent>
@@ -67,21 +68,9 @@ public:
     void setTexture(const QString& path);
 
     /**
-     * Manages actions when a key is pressed
-     * @param e the key event
+     * @return a pointer to the camera object
      */
-    void keyPressEvent(QKeyEvent *e) override;
-
-    /**
-     * Toggles the free camera
-     * @param freeCam true if the free camera should be enabled; flase otherwise
-     */
-    void setFreeCam(bool freeCam);
-
-    /**
-     * Resets the camera position
-     */
-    void resetCamera();
+    Camera *getCamera() const;
 
 public slots:
     /**
@@ -144,6 +133,7 @@ private:
 
     // Skybox
     Skybox* skybox;
+
     // Skybox shader program
     QOpenGLShaderProgram skyboxShaderProgram;
 
@@ -155,15 +145,7 @@ private:
     QMatrix4x4 modelProjectionMatrix;
 
     // Camera related
-    QVector2D mousePressPosition;
-    QQuaternion rotation;
-    QQuaternion skyboxRotation;
-    QVector3D rotationAxis;
-    qreal angularSpeed;
-    QVector3D cameraPosition;
-    QVector3D cameraFront;
-    QVector3D cameraUp;
-    bool freeCamera;
+    Camera* camera;
 
     // Textures
     QOpenGLTexture* modelTexture;
