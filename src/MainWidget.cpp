@@ -71,7 +71,7 @@ void MainWidget::initializeGL() {
     // Enable back face culling
     glEnable(GL_CULL_FACE);
     // Creates the geometry engine managing the model
-    geometries = new GeometryEngine(new ChewToyModel(100, 100, 1), skybox);
+    geometries = new GeometryEngine(new ChewToyModel(70, 70, 1), skybox);
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
@@ -195,12 +195,10 @@ void MainWidget::paintGL() {
 }
 
 void MainWidget::setNbOfStages(int stages) {
-    this->nbOfStages = stages;
     this->geometries->setNbOfStages(stages);
 }
 
 void MainWidget::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
-    this->nbOfVerticesPerStage = nbOfVerticesPerStage;
     this->geometries->setNbOfVerticesPerStage(nbOfVerticesPerStage);
 }
 
@@ -219,7 +217,6 @@ void MainWidget::removeBottleneck(int index) {
 }
 
 void MainWidget::setCylinderSize(int size) {
-    this->cylinderSize = size;
     this->geometries->setCylinderSize(size);
 }
 

@@ -167,12 +167,6 @@ private:
 
     // Textures
     QOpenGLTexture* modelTexture;
-
-
-    // Object parameters
-    int nbOfStages;
-    int nbOfVerticesPerStage;
-    int cylinderSize;
 };
 
 #endif // MAINWIDGET_H
