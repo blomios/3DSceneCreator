@@ -11,5 +11,6 @@
         <file>skybox/px.png</file>
         <file>skybox/py.png</file>
         <file>skybox/pz.png</file>
+        <file>icon.png</file>
     </qresource>
 </RCC>
