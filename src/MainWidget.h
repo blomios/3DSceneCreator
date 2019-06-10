@@ -64,7 +64,7 @@ public:
      * Sets the texture of the model
      * @param path the path to the texture
      */
-    void setTexture(QString path);
+    void setTexture(const QString& path);
 
     /**
      * Manages actions when a key is pressed

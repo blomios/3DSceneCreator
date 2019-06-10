@@ -146,8 +146,8 @@ void ChewToyModel::placeVertices() {
             arr.push_back(this->nbOfVerticesPerStage * (i - 1) + ((j + 1) % this->nbOfVerticesPerStage));
             arr.push_back(this->nbOfVerticesPerStage * (i) + ((j + 1) % this->nbOfVerticesPerStage));
 
-            for (int j = 0; j < arr.size(); j++) {
-                indices.push_back(arr[j]);
+            for (unsigned short k : arr) {
+                indices.push_back(k);
             }
 
         }

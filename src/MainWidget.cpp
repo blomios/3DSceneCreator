@@ -1,10 +1,6 @@
 #include "MainWidget.h"
 
-MainWidget::MainWidget(QWidget *parent) :
-        QOpenGLWidget(parent),
-        geometries(0),
-        angularSpeed(0) {
-}
+MainWidget::MainWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
 MainWidget::~MainWidget() {
     // Make sure the context is current when deleting the texture
@@ -64,14 +60,14 @@ void MainWidget::initializeGL() {
     // Loads and initializes the shaders
     initShaders();
     // Initializes the textures
-    skybox = new Skybox();
+    this->skybox = new Skybox();
     initTextures();
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
     // Enable back face culling
     glEnable(GL_CULL_FACE);
     // Creates the geometry engine managing the model
-    geometries = new GeometryEngine(new ChewToyModel(70, 70, 1), skybox);
+    this->geometries = new GeometryEngine(new ChewToyModel(70, 70, 1), skybox);
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
@@ -81,7 +77,9 @@ void MainWidget::initializeGL() {
     this->cameraUp = QVector3D(0.0f, 1.0f, 0.0f);
     this->cameraFront = QVector3D(0.0f, 0.0f, -1.0f);
 
-    freeCamera = false;
+    this->freeCamera = false;
+
+    this->angularSpeed = 0;
 }
 
 void MainWidget::initTextures() {
@@ -220,7 +218,7 @@ void MainWidget::setCylinderSize(int size) {
     this->geometries->setCylinderSize(size);
 }
 
-void MainWidget::setTexture(QString path) {
+void MainWidget::setTexture(const QString& path) {
     QImage image = QImage(path);
     if (!image.isNull()) {
         delete modelTexture;
@@ -236,9 +234,11 @@ void MainWidget::keyPressEvent(QKeyEvent *e) {
         } else if (e->key() == Qt::Key_S) {
             this->cameraPosition -= cameraSpeed * this->cameraFront;
         } else if (e->key() == Qt::Key_D) {
-            this->cameraPosition += QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
+            this->cameraPosition +=
+                    QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
         } else if (e->key() == Qt::Key_Q) {
-            this->cameraPosition -= QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
+            this->cameraPosition -=
+                    QVector3D::crossProduct(this->cameraFront, this->cameraUp).normalized() * cameraSpeed;
         }
     }
 }
