@@ -140,6 +140,7 @@ void MainWidget::paintGL() {
     modelShaderProgram.setUniformValue("view", modelViewMatrix);
     modelShaderProgram.setUniformValue("projection", modelProjectionMatrix);
     modelShaderProgram.setUniformValue("modelTexture", 0);
+    modelShaderProgram.setUniformValue("viewPos",modelViewMatrix);
     modelShaderProgram.release();
 
     // Draws the skybox
