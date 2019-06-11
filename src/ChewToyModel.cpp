@@ -36,6 +36,11 @@ void ChewToyModel::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
 }
 
 void ChewToyModel::setCylinderSize(float cylinderSize) {
+
+    for(int i=0; i<bottleNecks.size(); i++){
+        removeBottleNeck(i, false);
+    }
+
     vertices.clear();
     indices.clear();
     modelVerticesBuffer->destroy();
@@ -44,6 +49,10 @@ void ChewToyModel::setCylinderSize(float cylinderSize) {
     modelVerticesBuffer->create();
     modelIndicesBuffer->create();
     placeVertices();
+
+    for(int i=0; i<bottleNecks.size(); i++){
+        setBottleNeck(bottleNecks[i].yPos, bottleNecks[i].xSize, bottleNecks[i].ySize);
+    }
 }
 
 void ChewToyModel::setNbOfStages(int nbOfStages) {
@@ -182,7 +191,7 @@ void ChewToyModel::removeBottleNeck(int bnIndex, bool deleteBnFromTheList) {
     float xSize = bottleNecks[bnIndex].xSize;
     float ySize = bottleNecks[bnIndex].ySize;
 
-    int initialIndex = getStagesFromYPosition(yPos) - nbOfVerticesPerStage / 2;
+    int initialIndex = getStagesFromYPosition(yPos) + nbOfVerticesPerStage / 2;
 
     int index = 0;
 
@@ -247,7 +256,7 @@ void ChewToyModel::addBottleNeck(float yPos, float xSize, float ySize) {
 
 void ChewToyModel::setBottleNeck(float yPos, float xSize, float ySize) {
 
-    int initialIndex = getStagesFromYPosition(yPos) - nbOfVerticesPerStage / 2;
+    int initialIndex = getStagesFromYPosition(yPos) + nbOfVerticesPerStage / 2;
 
 
     int index = 0;

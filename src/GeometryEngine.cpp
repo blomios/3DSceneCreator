@@ -13,7 +13,7 @@ GeometryEngine::~GeometryEngine() {
 
 //Draw the geometry
 void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
-    this->model->placeVertices();
+    //this->model->placeVertices();
     // Binds the model's VBO and EBO
     this->model->bindVBO();
     this->model->bindEBO();
