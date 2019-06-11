@@ -10,10 +10,11 @@ private:
     QVector3D position;
     QVector3D color;
     QVector2D textureCoords;
+    QVector3D normals;
 public:
     ModelVertex();
 
-    ModelVertex(QVector3D position, QVector3D color, QVector2D textCoords);
+    ModelVertex(QVector3D position, QVector3D color, QVector2D textCoords, QVector3D normalCoord);
 
     const QVector3D getPosition() const;
 
