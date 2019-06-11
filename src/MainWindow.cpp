@@ -166,11 +166,11 @@ void MainWindow::on_addBottleneckButton_clicked() {
     bottleneckControls.tempBottleneckYSizeLabel = new QLabel("Y-Size :");
     bottleneckControls.tempBottleneckGridLayout->addWidget(bottleneckControls.tempBottleneckYSizeLabel, 4, 0);
     bottleneckControls.tempBottleneckYSizeSlider = new QSlider(Qt::Horizontal);
-    bottleneckControls.tempBottleneckYSizeSlider->setRange(-5, 5);
+    bottleneckControls.tempBottleneckYSizeSlider->setRange(0, 5);
     bottleneckControls.tempBottleneckGridLayout->addWidget(bottleneckControls.tempBottleneckYSizeSlider, 5, 0);
     bottleneckControls.tempBottleneckYSizeSpinBox = new QDoubleSpinBox();
-    bottleneckControls.tempBottleneckXSizeSpinBox->setRange(-0.5, 0.5);
-    bottleneckControls.tempBottleneckXSizeSpinBox->setSingleStep(0.1);
+    bottleneckControls.tempBottleneckYSizeSpinBox->setRange(0, 0.5);
+    bottleneckControls.tempBottleneckYSizeSpinBox->setSingleStep(0.1);
     bottleneckControls.tempBottleneckGridLayout->addWidget(bottleneckControls.tempBottleneckYSizeSpinBox, 5, 1);
 
     bottleneckControls.bottleneckRemovePushButton = new QPushButton("Remove the bottleneck");
