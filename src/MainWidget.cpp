@@ -134,13 +134,17 @@ void MainWidget::paintGL() {
 
     // Projection of the model
 
+    // Light position
+    QVector3D lightPosition = QVector3D(-20, -20, 5);
+
     // Sets the matrices in the model shader program
     modelShaderProgram.bind();
     modelShaderProgram.setUniformValue("model", modelMatrix);
     modelShaderProgram.setUniformValue("view", modelViewMatrix);
     modelShaderProgram.setUniformValue("projection", modelProjectionMatrix);
     modelShaderProgram.setUniformValue("modelTexture", 0);
-    modelShaderProgram.setUniformValue("viewPos",modelViewMatrix);
+    modelShaderProgram.setUniformValue("viewPos", modelViewMatrix);
+    modelShaderProgram.setUniformValue("lightPos", lightPosition);
     modelShaderProgram.release();
 
     // Draws the skybox

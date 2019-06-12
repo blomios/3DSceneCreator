@@ -23,7 +23,7 @@ void main() {
     // Pases the texture coordinates to the fragment shader
     fTexCoord = texCoord;
     // Pases the normal coordinates to the fragment shader
-    fNormalsCoord = normalsCoord;
+    fNormalsCoord = mat3(transpose(inverse(model))) * normalsCoord;
     // Pases the fragment position coordinates to the fragment shader
     fFragPos = vec3(model * vec4(position, 1.0));
 }

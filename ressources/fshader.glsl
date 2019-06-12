@@ -2,6 +2,7 @@
 
 uniform sampler2D modelTexture;
 uniform vec3 viewPos;
+uniform vec3 lightPos;
 
 in vec3 fColor;
 in vec2 fTexCoord;
@@ -12,7 +13,7 @@ out vec4 fragColor;
 
 void main() {
     // The position of the Sun
-    vec3 lightPos = vec3(1.2f, 1.2f, 1.2f);
+    //vec3 lightPos = vec3(1.2f, 1.2f, 1.2f);
     // Color of the light source (the Sun here) : white
     vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
     // Normalizes the normal vector of the fragment
