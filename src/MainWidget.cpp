@@ -135,7 +135,7 @@ void MainWidget::paintGL() {
     // Projection of the model
 
     // Light position
-    QVector3D lightPosition = QVector3D(-20, -20, 5);
+    QVector3D lightPosition = skyboxViewMatrix * skyboxModelMatrix * QVector3D(-1, 0.5, -1);
 
     // Sets the matrices in the model shader program
     modelShaderProgram.bind();
