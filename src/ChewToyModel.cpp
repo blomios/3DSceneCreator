@@ -84,7 +84,7 @@ void ChewToyModel::placeVertices() {
 
             QVector3D color = QVector3D(1.0f, abs(x), 0.0f); //Set a color with a nice gradient color :p
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
-                                            (float) i / maxStage);
+                                            (float) i / nbOfStages);
 
             //Add the created vertice in the tab
             ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
@@ -108,7 +108,7 @@ void ChewToyModel::placeVertices() {
 
             QVector3D color = QVector3D(1.0f, abs(x), 0.0f); //Set a color with a nice gradient color :p
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
-                                            (float) i / maxStage);
+                                            (float) i / nbOfStages);
 
             //Add the created vertice in the tab
             ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
@@ -130,7 +130,7 @@ void ChewToyModel::placeVertices() {
 
             QVector3D color = QVector3D(1.0f, abs(x), 0.0f); //Set a color with a nice gradient color :p
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
-                                            (float) i / maxStage);
+                                            (float) i / nbOfStages);
 
             //Add the created vertice in the tab
             ModelVertex vertex(QVector3D(x, y, z), color, texCoords);

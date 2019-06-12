@@ -50,7 +50,7 @@ void MainWidget::initializeGL() {
 }
 
 void MainWidget::initTextures() {
-    this->modelTexture = new QOpenGLTexture(QImage(":/texture.png"));
+    this->modelTexture = new QOpenGLTexture(QImage(":/textures/texture.png"));
 }
 
 void MainWidget::initShaders() {

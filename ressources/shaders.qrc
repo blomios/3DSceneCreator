@@ -4,7 +4,6 @@
         <file>fshader.glsl</file>
         <file>skybox/vshaderSkybox.glsl</file>
         <file>skybox/fshaderSkybox.glsl</file>
-        <file>texture.png</file>
         <file>skybox/nx.png</file>
         <file>skybox/ny.png</file>
         <file>skybox/nz.png</file>
@@ -12,5 +11,11 @@
         <file>skybox/py.png</file>
         <file>skybox/pz.png</file>
         <file>icon.png</file>
+        <file>textures/ballon.png</file>
+        <file>textures/images.png</file>
+        <file>textures/kong.PNG</file>
+        <file>textures/texture.png</file>
+        <file>textures/texturerose.png</file>
+        <file>texture.png</file>
     </qresource>
 </RCC>

@@ -11,10 +11,7 @@ SOURCES += \
     src/MainWindow.cpp \
     src/ModelVertex.cpp \
     src/Skybox.cpp \
-    src/main.cpp \
-    src/mainwidget.cpp \
-    src/geometryengine.cpp \
-    src/mainwindow.cpp
+    src/main.cpp
 
 HEADERS += \
     src/Camera.h \
@@ -23,10 +20,7 @@ HEADERS += \
     src/MainWidget.h \
     src/MainWindow.h \
     src/ModelVertex.h \
-    src/Skybox.h \
-    src/mainwidget.h \
-    src/geometryengine.h \
-    src/mainwindow.h
+    src/Skybox.h
 
 RESOURCES += \
     ressources/shaders.qrc \
