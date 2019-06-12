@@ -11,14 +11,19 @@ in vec3 normalsCoord;
 
 out vec3 fColor;
 out vec2 fTexCoord;
-out vec3 fnormalsCoord;
-out vec3 FragPos;
+out vec3 fNormalsCoord;
+out vec3 fFragPos;
 
 void main() {
-    // Calculate vertex position in screen space
+    // Computes the vertex position in screen space
     gl_Position = projection * view * model * vec4(position, 1.0);
+
+    // Passes the color to the fragment shader
     fColor = color;
+    // Pases the texture coordinates to the fragment shader
     fTexCoord = texCoord;
-    fnormalsCoord = normalsCoord;
-    FragPos = vec3(model * vec4(position, 1.0));
+    // Pases the normal coordinates to the fragment shader
+    fNormalsCoord = normalsCoord;
+    // Pases the fragment position coordinates to the fragment shader
+    fFragPos = vec3(model * vec4(position, 1.0));
 }
