@@ -13,7 +13,7 @@ GeometryEngine::~GeometryEngine() {
 
 //Draw the geometry
 void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
-    this->model->placeVertices();
+    //this->model->placeVertices();
     // Binds the model's VBO and EBO
     this->model->bindVBO();
     this->model->bindEBO();
@@ -41,6 +41,14 @@ void GeometryEngine::drawGeometry(QOpenGLShaderProgram *program) {
     int textureLocation = program->attributeLocation("texCoord");
     program->enableAttributeArray(textureLocation);
     program->setAttributeBuffer(textureLocation, GL_FLOAT, offset, 3, sizeof(ModelVertex));
+
+    // Offset for texture coordinates
+    offset += sizeof(QVector2D);
+
+    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
+    int NormalsLocation = program->attributeLocation("normalsCoord");
+    program->enableAttributeArray(NormalsLocation);
+    program->setAttributeBuffer(NormalsLocation, GL_FLOAT, offset, 3, sizeof(ModelVertex));
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, model->getIndicesNumber(), GL_UNSIGNED_SHORT, 0);

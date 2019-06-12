@@ -36,6 +36,11 @@ void ChewToyModel::setNbOfVerticesPerStage(int nbOfVerticesPerStage) {
 }
 
 void ChewToyModel::setCylinderSize(float cylinderSize) {
+
+    for(int i=0; i<bottleNecks.size(); i++){
+        removeBottleNeck(i, false);
+    }
+
     vertices.clear();
     indices.clear();
     modelVerticesBuffer->destroy();
@@ -44,6 +49,10 @@ void ChewToyModel::setCylinderSize(float cylinderSize) {
     modelVerticesBuffer->create();
     modelIndicesBuffer->create();
     placeVertices();
+
+    for(int i=0; i<bottleNecks.size(); i++){
+        setBottleNeck(bottleNecks[i].yPos, bottleNecks[i].xSize, bottleNecks[i].ySize);
+    }
 }
 
 void ChewToyModel::setNbOfStages(int nbOfStages) {
@@ -65,6 +74,11 @@ void ChewToyModel::placeVertices() {
     int N = P * this->nbOfStages / 100;
     int beginStage = 0;
     int maxStage = (this->nbOfStages - N) / 2;
+
+
+    QVector3D sphereCenterUp = QVector3D(0, cylinderSize/2, 0);
+    QVector3D sphereCenterDown = QVector3D(0, -cylinderSize/2, 0);
+
     //Set position of each vertices
     for (int i = beginStage; i <= maxStage; i++) {
         for (int j = 0; j < this->nbOfVerticesPerStage; j++) {
@@ -76,9 +90,11 @@ void ChewToyModel::placeVertices() {
             QVector3D color = QVector3D(1.0f, abs(x), 0.0f); //Set a color with a nice gradient color :p
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
                                             (float) i / maxStage);
+            QVector3D pos(x, y, z);
+            QVector3D normalCoord = pos - sphereCenterUp;
 
             //Add the created vertice in the tab
-            ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
+            ModelVertex vertex(pos, color, texCoords, normalCoord);
 
             vertices.push_back(vertex);
         }
@@ -101,8 +117,11 @@ void ChewToyModel::placeVertices() {
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
                                             (float) i / maxStage);
 
+            QVector3D pos(x, y, z);
+            QVector3D normalCoord = pos - QVector3D(0, y, 0);
+
             //Add the created vertice in the tab
-            ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
+            ModelVertex vertex(QVector3D(x, y, z), color, texCoords,normalCoord);
 
             vertices.push_back(vertex);
         }
@@ -123,8 +142,11 @@ void ChewToyModel::placeVertices() {
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
                                             (float) i / maxStage);
 
+            QVector3D pos(x, y, z);
+            QVector3D normalCoord = pos - sphereCenterDown;
+
             //Add the created vertice in the tab
-            ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
+            ModelVertex vertex(QVector3D(x, y, z), color, texCoords,normalCoord);
 
             vertices.push_back(vertex);
         }
@@ -182,7 +204,7 @@ void ChewToyModel::removeBottleNeck(int bnIndex, bool deleteBnFromTheList) {
     float xSize = bottleNecks[bnIndex].xSize;
     float ySize = bottleNecks[bnIndex].ySize;
 
-    int initialIndex = getStagesFromYPosition(yPos) - nbOfVerticesPerStage / 2;
+    int initialIndex = getStagesFromYPosition(yPos) + nbOfVerticesPerStage / 2;
 
     int index = 0;
 
@@ -247,7 +269,7 @@ void ChewToyModel::addBottleNeck(float yPos, float xSize, float ySize) {
 
 void ChewToyModel::setBottleNeck(float yPos, float xSize, float ySize) {
 
-    int initialIndex = getStagesFromYPosition(yPos) - nbOfVerticesPerStage / 2;
+    int initialIndex = getStagesFromYPosition(yPos) + nbOfVerticesPerStage / 2;
 
 
     int index = 0;

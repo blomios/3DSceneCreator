@@ -1,7 +1,8 @@
 #include "ModelVertex.h"
 
-ModelVertex::ModelVertex(QVector3D position, QVector3D color, QVector2D textCoords) {
+ModelVertex::ModelVertex(QVector3D position, QVector3D color, QVector2D textCoords, QVector3D normalCoord) {
     this->position = position;
+    this->normals = normalCoord;
     this->color = color;
     this->textureCoords = textCoords;
 }
