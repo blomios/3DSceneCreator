@@ -89,7 +89,7 @@ void ChewToyModel::placeVertices() {
 
             QVector3D color = QVector3D(1.0f, abs(x), 0.0f); //Set a color with a nice gradient color :p
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
-                                            (float) i / maxStage);
+                                            (float) i / nbOfStages);
             QVector3D pos(x, y, z);
             QVector3D normalCoord = pos - sphereCenterUp;
 
