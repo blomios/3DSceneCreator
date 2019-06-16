@@ -23,7 +23,7 @@ void main() {
 
 
     // AMBIENT
-    float ambientStrength = 1.0;
+    float ambientStrength = 0.8;
     vec3 ambient = ambientStrength * lightColor;
 
     // DIFFUSE : Brightness where the fragments are aligned to the light rays
@@ -31,7 +31,7 @@ void main() {
     vec3 diffuse = diff * lightColor;
 
     // SPECULAR : Strong brightness where the camera is looking
-    float specularStrength = 0.5;
+    float specularStrength = 1.0;
     vec3 viewDir = normalize(viewPos - fFragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
