@@ -74,6 +74,11 @@ void ChewToyModel::placeVertices() {
     int N = P * this->nbOfStages / 100;
     int beginStage = 0;
     int maxStage = (this->nbOfStages - N) / 2;
+
+
+    QVector3D sphereCenterUp = QVector3D(0, cylinderSize/2, 0);
+    QVector3D sphereCenterDown = QVector3D(0, -cylinderSize/2, 0);
+
     //Set position of each vertices
     for (int i = beginStage; i <= maxStage; i++) {
         for (int j = 0; j < this->nbOfVerticesPerStage; j++) {
@@ -84,10 +89,12 @@ void ChewToyModel::placeVertices() {
 
             QVector3D color = QVector3D(1.0f, abs(x), 0.0f); //Set a color with a nice gradient color :p
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
-                                            (float) i / nbOfStages);
+                                            (float) i / maxStage);
+            QVector3D pos(x, y, z);
+            QVector3D normalCoord = pos - sphereCenterUp;
 
             //Add the created vertice in the tab
-            ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
+            ModelVertex vertex(pos, color, texCoords, normalCoord);
 
             vertices.push_back(vertex);
         }
@@ -110,8 +117,11 @@ void ChewToyModel::placeVertices() {
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
                                             (float) i / nbOfStages);
 
+            QVector3D pos(x, y, z);
+            QVector3D normalCoord = pos - QVector3D(0, y, 0);
+
             //Add the created vertice in the tab
-            ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
+            ModelVertex vertex(QVector3D(x, y, z), color, texCoords,normalCoord);
 
             vertices.push_back(vertex);
         }
@@ -132,8 +142,11 @@ void ChewToyModel::placeVertices() {
             QVector2D texCoords = QVector2D((float) j / this->nbOfVerticesPerStage,
                                             (float) i / nbOfStages);
 
+            QVector3D pos(x, y, z);
+            QVector3D normalCoord = pos - sphereCenterDown;
+
             //Add the created vertice in the tab
-            ModelVertex vertex(QVector3D(x, y, z), color, texCoords);
+            ModelVertex vertex(QVector3D(x, y, z), color, texCoords,normalCoord);
 
             vertices.push_back(vertex);
         }
