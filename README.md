@@ -21,3 +21,7 @@ Soon :)
 ## Authors
 
 See the list of [contributors](https://github.com/blomios/ChewToyCreator/graphs/contributors) who participated in this project.
+
+## Demonstration
+
+![DemonstrationGif](https://raw.githubusercontent.com/blomios/ChewToyCreator/master/Gif/Presentation.gif "DemonstrationGif")
