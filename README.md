@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/blomios/chewtoycreator/badge/master)](https://www.codefactor.io/repository/github/blomios/chewtoycreator/overview/master)
+
 # ChewToyCreator
 
 Create the perfect chew toy for your dog !
